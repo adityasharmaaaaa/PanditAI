@@ -91,7 +91,7 @@ export default function Home() {
               </div>
 
               <button className="w-full bg-gradient-to-r from-[#ff8c42] to-[#ff6b1a] hover:from-[#ff6b1a] hover:to-[#ff8c42] text-white font-bold py-4 text-lg rounded-lg mt-6 transition-all duration-500 shadow-lg">
-                Generate Horoscope 🔮
+                Generate Horoscope
               </button>
             </div>
           </div>
