@@ -13,4 +13,4 @@ services:
       NEO4J_apoc_import_file_enabled: "true"
       NEO4J_PLUGINS: '["apoc"]'
     volumes:
-      - ./data/neo4j_data:/data
+      - ./backend/data/neo4j_data:/data
