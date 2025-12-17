@@ -1,0 +1,99 @@
+[
+  {
+    "id": "rule_Sun_11_Ascendant_base",
+    "type": "yoga",
+    "entities": [
+      "Sun"
+    ],
+    "main_condition": "Sun in Ascendant",
+    "modifying_condition": "None",
+    "result": "Sparse hair, laziness, hot constitution, scholarly and valorous",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Sun_Aries_base",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "Aries"
+    ],
+    "main_condition": "Sun in Aries (Exalted)",
+    "modifying_condition": "None",
+    "result": "Wealthy and famous",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Sun_Libra_base",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "Libra"
+    ],
+    "main_condition": "Sun in Libra (Debilitated)",
+    "modifying_condition": "None",
+    "result": "Poor and dishonored",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Sun_2nd_base",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "2nd House"
+    ],
+    "main_condition": "Sun in the 2nd House",
+    "modifying_condition": "None",
+    "result": "Without wealth and devoid of learning",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Sun_10th_base",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "10th House"
+    ],
+    "main_condition": "Sun in the 10th House",
+    "modifying_condition": "None",
+    "result": "Like a king, wealthy, brave, and with vehicles (elephants and horses)",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Jupiter_2nd_aspecting",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "Jupiter",
+      "2nd House"
+    ],
+    "main_condition": "Sun in the 2nd House, aspected by Jupiter",
+    "modifying_condition": "Aspected by a Benefic (Jupiter)",
+    "result": "Very wealthy and learned speaker",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Sun_10th_Malefic",
+    "type": "yoga",
+    "entities": [
+      "Sun",
+      "10th House"
+    ],
+    "main_condition": "Sun in the 10th House, connected with a Malefic",
+    "modifying_condition": "Connected with a Malefic",
+    "result": "Obstacles in career",
+    "source": "Chapter 24: Effects of the Sun"
+  },
+  {
+    "id": "rule_Jupiter_Kendra_12",
+    "type": "yoga",
+    "entities": [
+      "Jupiter",
+      "Moon",
+      "Kendra (1, 4, 7, 10)"
+    ],
+    "main_condition": "Jupiter in a Kendra from the Moon",
+    "modifying_condition": "In Navamsa of Mars",
+    "result": "Destroys enemies, polite, and rules over a village or town",
+    "source": "Chapter 24: Effects of the Sun"
+  }
+]

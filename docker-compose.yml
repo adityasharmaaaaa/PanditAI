@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:5.16.0
+    container_name: pandit_graph_db
+    ports:
+      - "7474:7474" # HTTP Interface
+      - "7687:7687" # Bolt Protocol (for Python)
+    environment:
+      NEO4J_AUTH: neo4j/pandit_secret_password
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - ./data/neo4j_data:/data

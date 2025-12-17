@@ -1,0 +1,974 @@
+[
+  {
+    "id": "SYN_Sun_1",
+    "text": "When Sun is placed in the 1 House, it brings the energy of authority, vitality, and the soul into the domain of the Self, appearance, and general vitality. This placement may require discipline or intensity regarding the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Sun_2",
+    "text": "When Sun is placed in the 2 House, it brings the energy of authority, vitality, and the soul into the domain of accumulated wealth, family, and speech. This placement may require discipline or intensity regarding accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Sun_3",
+    "text": "When Sun is placed in the 3 House, it brings the energy of authority, vitality, and the soul into the domain of siblings, courage, and self-effort. This placement may require discipline or intensity regarding siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Sun_4",
+    "text": "When Sun is placed in the 4 House, it brings the energy of authority, vitality, and the soul into the domain of mother, home, land, and happiness. This placement may require discipline or intensity regarding mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Sun_5",
+    "text": "When Sun is placed in the 5 House, it brings the energy of authority, vitality, and the soul into the domain of children, intelligence, and speculation. This placement may require discipline or intensity regarding children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Sun_6",
+    "text": "When Sun is placed in the 6 House, it brings the energy of authority, vitality, and the soul into the domain of enemies, debts, and diseases. This placement may require discipline or intensity regarding enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Sun_7",
+    "text": "When Sun is placed in the 7 House, it brings the energy of authority, vitality, and the soul into the domain of marriage, partnership, and legal bindings. This placement may require discipline or intensity regarding marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Sun_8",
+    "text": "When Sun is placed in the 8 House, it brings the energy of authority, vitality, and the soul into the domain of longevity, transformation, and occult knowledge. This placement may require discipline or intensity regarding longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Sun_9",
+    "text": "When Sun is placed in the 9 House, it brings the energy of authority, vitality, and the soul into the domain of dharma, father, guru, and fortune. This placement may require discipline or intensity regarding dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Sun_10",
+    "text": "When Sun is placed in the 10 House, it brings the energy of authority, vitality, and the soul into the domain of career, reputation, and social standing. This placement may require discipline or intensity regarding career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Sun_11",
+    "text": "When Sun is placed in the 11 House, it brings the energy of authority, vitality, and the soul into the domain of gains, older siblings, and networks. This placement may require discipline or intensity regarding gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Sun_12",
+    "text": "When Sun is placed in the 12 House, it brings the energy of authority, vitality, and the soul into the domain of losses, liberation, and foreign residence. This placement may require discipline or intensity regarding losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Sun",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Moon_1",
+    "text": "When Moon is placed in the 1 House, it brings the energy of emotions, mind, and comfort into the domain of the Self, appearance, and general vitality. This is generally a favorable placement that expands the native's the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Moon_2",
+    "text": "When Moon is placed in the 2 House, it brings the energy of emotions, mind, and comfort into the domain of accumulated wealth, family, and speech. This is generally a favorable placement that expands the native's accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Moon_3",
+    "text": "When Moon is placed in the 3 House, it brings the energy of emotions, mind, and comfort into the domain of siblings, courage, and self-effort. This is generally a favorable placement that expands the native's siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Moon_4",
+    "text": "When Moon is placed in the 4 House, it brings the energy of emotions, mind, and comfort into the domain of mother, home, land, and happiness. This is generally a favorable placement that expands the native's mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Moon_5",
+    "text": "When Moon is placed in the 5 House, it brings the energy of emotions, mind, and comfort into the domain of children, intelligence, and speculation. This is generally a favorable placement that expands the native's children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Moon_6",
+    "text": "When Moon is placed in the 6 House, it brings the energy of emotions, mind, and comfort into the domain of enemies, debts, and diseases. This is generally a favorable placement that expands the native's enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Moon_7",
+    "text": "When Moon is placed in the 7 House, it brings the energy of emotions, mind, and comfort into the domain of marriage, partnership, and legal bindings. This is generally a favorable placement that expands the native's marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Moon_8",
+    "text": "When Moon is placed in the 8 House, it brings the energy of emotions, mind, and comfort into the domain of longevity, transformation, and occult knowledge. This is generally a favorable placement that expands the native's longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Moon_9",
+    "text": "When Moon is placed in the 9 House, it brings the energy of emotions, mind, and comfort into the domain of dharma, father, guru, and fortune. This is generally a favorable placement that expands the native's dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Moon_10",
+    "text": "When Moon is placed in the 10 House, it brings the energy of emotions, mind, and comfort into the domain of career, reputation, and social standing. This is generally a favorable placement that expands the native's career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Moon_11",
+    "text": "When Moon is placed in the 11 House, it brings the energy of emotions, mind, and comfort into the domain of gains, older siblings, and networks. This is generally a favorable placement that expands the native's gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Moon_12",
+    "text": "When Moon is placed in the 12 House, it brings the energy of emotions, mind, and comfort into the domain of losses, liberation, and foreign residence. This is generally a favorable placement that expands the native's losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Moon",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Mars_1",
+    "text": "When Mars is placed in the 1 House, it brings the energy of energy, courage, and technical skill into the domain of the Self, appearance, and general vitality. This placement may require discipline or intensity regarding the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Mars_2",
+    "text": "When Mars is placed in the 2 House, it brings the energy of energy, courage, and technical skill into the domain of accumulated wealth, family, and speech. This placement may require discipline or intensity regarding accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Mars_3",
+    "text": "When Mars is placed in the 3 House, it brings the energy of energy, courage, and technical skill into the domain of siblings, courage, and self-effort. This placement may require discipline or intensity regarding siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Mars_4",
+    "text": "When Mars is placed in the 4 House, it brings the energy of energy, courage, and technical skill into the domain of mother, home, land, and happiness. This placement may require discipline or intensity regarding mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Mars_5",
+    "text": "When Mars is placed in the 5 House, it brings the energy of energy, courage, and technical skill into the domain of children, intelligence, and speculation. This placement may require discipline or intensity regarding children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Mars_6",
+    "text": "When Mars is placed in the 6 House, it brings the energy of energy, courage, and technical skill into the domain of enemies, debts, and diseases. This placement may require discipline or intensity regarding enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Mars_7",
+    "text": "When Mars is placed in the 7 House, it brings the energy of energy, courage, and technical skill into the domain of marriage, partnership, and legal bindings. This placement may require discipline or intensity regarding marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Mars_8",
+    "text": "When Mars is placed in the 8 House, it brings the energy of energy, courage, and technical skill into the domain of longevity, transformation, and occult knowledge. This placement may require discipline or intensity regarding longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Mars_9",
+    "text": "When Mars is placed in the 9 House, it brings the energy of energy, courage, and technical skill into the domain of dharma, father, guru, and fortune. This placement may require discipline or intensity regarding dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Mars_10",
+    "text": "When Mars is placed in the 10 House, it brings the energy of energy, courage, and technical skill into the domain of career, reputation, and social standing. This placement may require discipline or intensity regarding career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Mars_11",
+    "text": "When Mars is placed in the 11 House, it brings the energy of energy, courage, and technical skill into the domain of gains, older siblings, and networks. This placement may require discipline or intensity regarding gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Mars_12",
+    "text": "When Mars is placed in the 12 House, it brings the energy of energy, courage, and technical skill into the domain of losses, liberation, and foreign residence. This placement may require discipline or intensity regarding losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mars",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Mercury_1",
+    "text": "When Mercury is placed in the 1 House, it brings the energy of intellect, communication, and business into the domain of the Self, appearance, and general vitality. This is generally a favorable placement that expands the native's the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Mercury_2",
+    "text": "When Mercury is placed in the 2 House, it brings the energy of intellect, communication, and business into the domain of accumulated wealth, family, and speech. This is generally a favorable placement that expands the native's accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Mercury_3",
+    "text": "When Mercury is placed in the 3 House, it brings the energy of intellect, communication, and business into the domain of siblings, courage, and self-effort. This is generally a favorable placement that expands the native's siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Mercury_4",
+    "text": "When Mercury is placed in the 4 House, it brings the energy of intellect, communication, and business into the domain of mother, home, land, and happiness. This is generally a favorable placement that expands the native's mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Mercury_5",
+    "text": "When Mercury is placed in the 5 House, it brings the energy of intellect, communication, and business into the domain of children, intelligence, and speculation. This is generally a favorable placement that expands the native's children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Mercury_6",
+    "text": "When Mercury is placed in the 6 House, it brings the energy of intellect, communication, and business into the domain of enemies, debts, and diseases. This is generally a favorable placement that expands the native's enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Mercury_7",
+    "text": "When Mercury is placed in the 7 House, it brings the energy of intellect, communication, and business into the domain of marriage, partnership, and legal bindings. This is generally a favorable placement that expands the native's marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Mercury_8",
+    "text": "When Mercury is placed in the 8 House, it brings the energy of intellect, communication, and business into the domain of longevity, transformation, and occult knowledge. This is generally a favorable placement that expands the native's longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Mercury_9",
+    "text": "When Mercury is placed in the 9 House, it brings the energy of intellect, communication, and business into the domain of dharma, father, guru, and fortune. This is generally a favorable placement that expands the native's dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Mercury_10",
+    "text": "When Mercury is placed in the 10 House, it brings the energy of intellect, communication, and business into the domain of career, reputation, and social standing. This is generally a favorable placement that expands the native's career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Mercury_11",
+    "text": "When Mercury is placed in the 11 House, it brings the energy of intellect, communication, and business into the domain of gains, older siblings, and networks. This is generally a favorable placement that expands the native's gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Mercury_12",
+    "text": "When Mercury is placed in the 12 House, it brings the energy of intellect, communication, and business into the domain of losses, liberation, and foreign residence. This is generally a favorable placement that expands the native's losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Mercury",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Jupiter_1",
+    "text": "When Jupiter is placed in the 1 House, it brings the energy of wisdom, expansion, and wealth into the domain of the Self, appearance, and general vitality. This is generally a favorable placement that expands the native's the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Jupiter_2",
+    "text": "When Jupiter is placed in the 2 House, it brings the energy of wisdom, expansion, and wealth into the domain of accumulated wealth, family, and speech. This is generally a favorable placement that expands the native's accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Jupiter_3",
+    "text": "When Jupiter is placed in the 3 House, it brings the energy of wisdom, expansion, and wealth into the domain of siblings, courage, and self-effort. This is generally a favorable placement that expands the native's siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Jupiter_4",
+    "text": "When Jupiter is placed in the 4 House, it brings the energy of wisdom, expansion, and wealth into the domain of mother, home, land, and happiness. This is generally a favorable placement that expands the native's mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Jupiter_5",
+    "text": "When Jupiter is placed in the 5 House, it brings the energy of wisdom, expansion, and wealth into the domain of children, intelligence, and speculation. This is generally a favorable placement that expands the native's children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Jupiter_6",
+    "text": "When Jupiter is placed in the 6 House, it brings the energy of wisdom, expansion, and wealth into the domain of enemies, debts, and diseases. This is generally a favorable placement that expands the native's enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Jupiter_7",
+    "text": "When Jupiter is placed in the 7 House, it brings the energy of wisdom, expansion, and wealth into the domain of marriage, partnership, and legal bindings. This is generally a favorable placement that expands the native's marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Jupiter_8",
+    "text": "When Jupiter is placed in the 8 House, it brings the energy of wisdom, expansion, and wealth into the domain of longevity, transformation, and occult knowledge. This is generally a favorable placement that expands the native's longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Jupiter_9",
+    "text": "When Jupiter is placed in the 9 House, it brings the energy of wisdom, expansion, and wealth into the domain of dharma, father, guru, and fortune. This is generally a favorable placement that expands the native's dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Jupiter_10",
+    "text": "When Jupiter is placed in the 10 House, it brings the energy of wisdom, expansion, and wealth into the domain of career, reputation, and social standing. This is generally a favorable placement that expands the native's career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Jupiter_11",
+    "text": "When Jupiter is placed in the 11 House, it brings the energy of wisdom, expansion, and wealth into the domain of gains, older siblings, and networks. This is generally a favorable placement that expands the native's gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Jupiter_12",
+    "text": "When Jupiter is placed in the 12 House, it brings the energy of wisdom, expansion, and wealth into the domain of losses, liberation, and foreign residence. This is generally a favorable placement that expands the native's losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Jupiter",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Venus_1",
+    "text": "When Venus is placed in the 1 House, it brings the energy of luxury, relationships, and art into the domain of the Self, appearance, and general vitality. This is generally a favorable placement that expands the native's the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Venus_2",
+    "text": "When Venus is placed in the 2 House, it brings the energy of luxury, relationships, and art into the domain of accumulated wealth, family, and speech. This is generally a favorable placement that expands the native's accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Venus_3",
+    "text": "When Venus is placed in the 3 House, it brings the energy of luxury, relationships, and art into the domain of siblings, courage, and self-effort. This is generally a favorable placement that expands the native's siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Venus_4",
+    "text": "When Venus is placed in the 4 House, it brings the energy of luxury, relationships, and art into the domain of mother, home, land, and happiness. This is generally a favorable placement that expands the native's mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Venus_5",
+    "text": "When Venus is placed in the 5 House, it brings the energy of luxury, relationships, and art into the domain of children, intelligence, and speculation. This is generally a favorable placement that expands the native's children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Venus_6",
+    "text": "When Venus is placed in the 6 House, it brings the energy of luxury, relationships, and art into the domain of enemies, debts, and diseases. This is generally a favorable placement that expands the native's enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Venus_7",
+    "text": "When Venus is placed in the 7 House, it brings the energy of luxury, relationships, and art into the domain of marriage, partnership, and legal bindings. This is generally a favorable placement that expands the native's marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Venus_8",
+    "text": "When Venus is placed in the 8 House, it brings the energy of luxury, relationships, and art into the domain of longevity, transformation, and occult knowledge. This is generally a favorable placement that expands the native's longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Venus_9",
+    "text": "When Venus is placed in the 9 House, it brings the energy of luxury, relationships, and art into the domain of dharma, father, guru, and fortune. This is generally a favorable placement that expands the native's dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Venus_10",
+    "text": "When Venus is placed in the 10 House, it brings the energy of luxury, relationships, and art into the domain of career, reputation, and social standing. This is generally a favorable placement that expands the native's career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Venus_11",
+    "text": "When Venus is placed in the 11 House, it brings the energy of luxury, relationships, and art into the domain of gains, older siblings, and networks. This is generally a favorable placement that expands the native's gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Venus_12",
+    "text": "When Venus is placed in the 12 House, it brings the energy of luxury, relationships, and art into the domain of losses, liberation, and foreign residence. This is generally a favorable placement that expands the native's losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Venus",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Saturn_1",
+    "text": "When Saturn is placed in the 1 House, it brings the energy of discipline, delay, and hard work into the domain of the Self, appearance, and general vitality. This placement may require discipline or intensity regarding the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Saturn_2",
+    "text": "When Saturn is placed in the 2 House, it brings the energy of discipline, delay, and hard work into the domain of accumulated wealth, family, and speech. This placement may require discipline or intensity regarding accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Saturn_3",
+    "text": "When Saturn is placed in the 3 House, it brings the energy of discipline, delay, and hard work into the domain of siblings, courage, and self-effort. This placement may require discipline or intensity regarding siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Saturn_4",
+    "text": "When Saturn is placed in the 4 House, it brings the energy of discipline, delay, and hard work into the domain of mother, home, land, and happiness. This placement may require discipline or intensity regarding mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Saturn_5",
+    "text": "When Saturn is placed in the 5 House, it brings the energy of discipline, delay, and hard work into the domain of children, intelligence, and speculation. This placement may require discipline or intensity regarding children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Saturn_6",
+    "text": "When Saturn is placed in the 6 House, it brings the energy of discipline, delay, and hard work into the domain of enemies, debts, and diseases. This placement may require discipline or intensity regarding enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Saturn_7",
+    "text": "When Saturn is placed in the 7 House, it brings the energy of discipline, delay, and hard work into the domain of marriage, partnership, and legal bindings. This placement may require discipline or intensity regarding marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Saturn_8",
+    "text": "When Saturn is placed in the 8 House, it brings the energy of discipline, delay, and hard work into the domain of longevity, transformation, and occult knowledge. This placement may require discipline or intensity regarding longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Saturn_9",
+    "text": "When Saturn is placed in the 9 House, it brings the energy of discipline, delay, and hard work into the domain of dharma, father, guru, and fortune. This placement may require discipline or intensity regarding dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Saturn_10",
+    "text": "When Saturn is placed in the 10 House, it brings the energy of discipline, delay, and hard work into the domain of career, reputation, and social standing. This placement may require discipline or intensity regarding career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Saturn_11",
+    "text": "When Saturn is placed in the 11 House, it brings the energy of discipline, delay, and hard work into the domain of gains, older siblings, and networks. This placement may require discipline or intensity regarding gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Saturn_12",
+    "text": "When Saturn is placed in the 12 House, it brings the energy of discipline, delay, and hard work into the domain of losses, liberation, and foreign residence. This placement may require discipline or intensity regarding losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Saturn",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Rahu_1",
+    "text": "When Rahu is placed in the 1 House, it brings the energy of desire, illusion, and foreign things into the domain of the Self, appearance, and general vitality. This placement may require discipline or intensity regarding the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Rahu_2",
+    "text": "When Rahu is placed in the 2 House, it brings the energy of desire, illusion, and foreign things into the domain of accumulated wealth, family, and speech. This placement may require discipline or intensity regarding accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Rahu_3",
+    "text": "When Rahu is placed in the 3 House, it brings the energy of desire, illusion, and foreign things into the domain of siblings, courage, and self-effort. This placement may require discipline or intensity regarding siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Rahu_4",
+    "text": "When Rahu is placed in the 4 House, it brings the energy of desire, illusion, and foreign things into the domain of mother, home, land, and happiness. This placement may require discipline or intensity regarding mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Rahu_5",
+    "text": "When Rahu is placed in the 5 House, it brings the energy of desire, illusion, and foreign things into the domain of children, intelligence, and speculation. This placement may require discipline or intensity regarding children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Rahu_6",
+    "text": "When Rahu is placed in the 6 House, it brings the energy of desire, illusion, and foreign things into the domain of enemies, debts, and diseases. This placement may require discipline or intensity regarding enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Rahu_7",
+    "text": "When Rahu is placed in the 7 House, it brings the energy of desire, illusion, and foreign things into the domain of marriage, partnership, and legal bindings. This placement may require discipline or intensity regarding marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Rahu_8",
+    "text": "When Rahu is placed in the 8 House, it brings the energy of desire, illusion, and foreign things into the domain of longevity, transformation, and occult knowledge. This placement may require discipline or intensity regarding longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Rahu_9",
+    "text": "When Rahu is placed in the 9 House, it brings the energy of desire, illusion, and foreign things into the domain of dharma, father, guru, and fortune. This placement may require discipline or intensity regarding dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Rahu_10",
+    "text": "When Rahu is placed in the 10 House, it brings the energy of desire, illusion, and foreign things into the domain of career, reputation, and social standing. This placement may require discipline or intensity regarding career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Rahu_11",
+    "text": "When Rahu is placed in the 11 House, it brings the energy of desire, illusion, and foreign things into the domain of gains, older siblings, and networks. This placement may require discipline or intensity regarding gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Rahu_12",
+    "text": "When Rahu is placed in the 12 House, it brings the energy of desire, illusion, and foreign things into the domain of losses, liberation, and foreign residence. This placement may require discipline or intensity regarding losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Rahu",
+      "house": 12
+    }
+  },
+  {
+    "id": "SYN_Ketu_1",
+    "text": "When Ketu is placed in the 1 House, it brings the energy of detachment, spirituality, and liberation into the domain of the Self, appearance, and general vitality. This placement may require discipline or intensity regarding the Self.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 1
+    }
+  },
+  {
+    "id": "SYN_Ketu_2",
+    "text": "When Ketu is placed in the 2 House, it brings the energy of detachment, spirituality, and liberation into the domain of accumulated wealth, family, and speech. This placement may require discipline or intensity regarding accumulated wealth.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 2
+    }
+  },
+  {
+    "id": "SYN_Ketu_3",
+    "text": "When Ketu is placed in the 3 House, it brings the energy of detachment, spirituality, and liberation into the domain of siblings, courage, and self-effort. This placement may require discipline or intensity regarding siblings.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 3
+    }
+  },
+  {
+    "id": "SYN_Ketu_4",
+    "text": "When Ketu is placed in the 4 House, it brings the energy of detachment, spirituality, and liberation into the domain of mother, home, land, and happiness. This placement may require discipline or intensity regarding mother.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 4
+    }
+  },
+  {
+    "id": "SYN_Ketu_5",
+    "text": "When Ketu is placed in the 5 House, it brings the energy of detachment, spirituality, and liberation into the domain of children, intelligence, and speculation. This placement may require discipline or intensity regarding children.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 5
+    }
+  },
+  {
+    "id": "SYN_Ketu_6",
+    "text": "When Ketu is placed in the 6 House, it brings the energy of detachment, spirituality, and liberation into the domain of enemies, debts, and diseases. This placement may require discipline or intensity regarding enemies.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 6
+    }
+  },
+  {
+    "id": "SYN_Ketu_7",
+    "text": "When Ketu is placed in the 7 House, it brings the energy of detachment, spirituality, and liberation into the domain of marriage, partnership, and legal bindings. This placement may require discipline or intensity regarding marriage.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 7
+    }
+  },
+  {
+    "id": "SYN_Ketu_8",
+    "text": "When Ketu is placed in the 8 House, it brings the energy of detachment, spirituality, and liberation into the domain of longevity, transformation, and occult knowledge. This placement may require discipline or intensity regarding longevity.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 8
+    }
+  },
+  {
+    "id": "SYN_Ketu_9",
+    "text": "When Ketu is placed in the 9 House, it brings the energy of detachment, spirituality, and liberation into the domain of dharma, father, guru, and fortune. This placement may require discipline or intensity regarding dharma.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 9
+    }
+  },
+  {
+    "id": "SYN_Ketu_10",
+    "text": "When Ketu is placed in the 10 House, it brings the energy of detachment, spirituality, and liberation into the domain of career, reputation, and social standing. This placement may require discipline or intensity regarding career.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 10
+    }
+  },
+  {
+    "id": "SYN_Ketu_11",
+    "text": "When Ketu is placed in the 11 House, it brings the energy of detachment, spirituality, and liberation into the domain of gains, older siblings, and networks. This placement may require discipline or intensity regarding gains.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 11
+    }
+  },
+  {
+    "id": "SYN_Ketu_12",
+    "text": "When Ketu is placed in the 12 House, it brings the energy of detachment, spirituality, and liberation into the domain of losses, liberation, and foreign residence. This placement may require discipline or intensity regarding losses.",
+    "source": "Synthesized Vedic Logic",
+    "condition": {
+      "planet": "Ketu",
+      "house": 12
+    }
+  }
+]

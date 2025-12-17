@@ -1,0 +1,43 @@
+[
+  {
+    "id": "BPHS_Ch3_01",
+    "text": "The Sun is the soul of all. It is the king of the stars.",
+    "source": "BPHS Chapter 3",
+    "entities": ["Sun"],
+    "type": "nature"
+  },
+  {
+    "id": "BPHS_Ch24_05",
+    "text": "If the Sun is in the 10th House, the native will be extremely wealthy, powerful, and like a king.",
+    "source": "BPHS Chapter 24",
+    "condition": {
+        "planet": "Sun",
+        "house": 10
+    }
+  },
+  {
+    "id": "BPHS_Ch24_06",
+    "text": "If the Sun is in the 1st House (Ascendant), the native is scholarly but may have sparse hair and weak eyes.",
+    "source": "BPHS Chapter 24",
+    "condition": {
+        "planet": "Sun",
+        "house": 1
+    }
+  },
+  {
+    "id": "BPHS_Ch24_07",
+    "text": "Mars in the 10th House makes the native a commander of armies or a leader of thieves, effectively very cruel.",
+    "source": "BPHS Chapter 24",
+    "condition": {
+        "planet": "Mars",
+        "house": 10
+    }
+  },
+  {
+    "id": "Jaimini_1_2",
+    "text": "The planet with the highest degree is the Atmakaraka (Self).",
+    "source": "Jaimini Sutras 1.1",
+    "entities": ["Atmakaraka"],
+    "type": "definition"
+  }
+]
