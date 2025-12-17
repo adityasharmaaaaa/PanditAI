@@ -6,39 +6,20 @@ export default function Home() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[#ffd700]/30 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Navbar */}
-      <nav className="w-full p-6 flex justify-between items-center z-10 border-b border-white/10 backdrop-blur-md">
-        <h1 className="text-2xl font-bold tracking-tighter flex items-center gap-2">
-          <span className="text-[#ff8c42] text-3xl">🕉️</span> Pandit
-          <span className="text-[#ff8c42]">AI</span>
-        </h1>
-        <button className="px-4 py-2 hover:text-[#ff8c42] transition-colors">
-          Log In
-        </button>
-      </nav>
 
       <main className="flex-1 flex flex-col lg:flex-row items-center justify-center p-6 lg:p-24 gap-12 z-10">
         {/* Left: Hero Text */}
         <div className="flex-1 text-center lg:text-left space-y-6 max-w-2xl">
-          <div className="inline-block px-4 py-1.5 rounded-full border border-[#ff8c42]/30 bg-[#ff8c42]/10 text-[#ff8c42] text-sm font-medium mb-4">
-            ✨ Neuro-Symbolic Vedic Astrology
-          </div>
           <h2 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-            Discover Your <br />
+            Welcome to <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff8c42] via-[#ffd700] to-[#ff8c42] animate-pulse">
-              Cosmic Destiny
+              PanditAI
             </span>
           </h2>
-          <p className="text-xl text-gray-400 leading-relaxed">
-            Harnessing the ancient wisdom of BPHS with the precision of modern
-            AI. Get accurate, actionable, and deeply personal horoscope
-            readings.
-          </p>
+
           <div className="flex gap-4 justify-center lg:justify-start pt-4">
             <button className="bg-[#ff8c42] hover:bg-[#ff8c42]/90 text-white font-semibold px-8 py-3 text-lg rounded-full shadow-lg shadow-[#ff8c42]/20 transition-all hover:scale-105">
               Get Started
-            </button>
-            <button className="border border-[#ff8c42]/50 text-white hover:bg-[#ff8c42]/10 rounded-full px-8 py-3 text-lg transition-colors">
-              Learn More
             </button>
           </div>
         </div>
@@ -48,9 +29,6 @@ export default function Home() {
           <div className="bg-white/5 backdrop-blur-xl border border-[#ff8c42]/20 rounded-lg shadow-2xl shadow-[#ff8c42]/10 p-8">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Enter Birth Details</h3>
-              <p className="text-gray-400 text-sm">
-                Verify your alignment with the stars
-              </p>
             </div>
 
             <div className="space-y-4">
@@ -119,10 +97,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
-      <footer className="w-full py-6 text-center text-gray-500 text-sm border-t border-white/10 backdrop-blur-sm z-10">
-        © 2025 PanditAI. All cosmic rights reserved.
-      </footer>
     </div>
   );
 }
