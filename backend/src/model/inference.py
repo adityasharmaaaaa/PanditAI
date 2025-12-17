@@ -1,15 +1,18 @@
 import os
 import requests
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Try to get the Groq Key from the environment
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+
 def generate_horoscope_reading(predictions, chart_meta):
-    
-    fact_context = chart_meta.get('fact_sheet', '')
-    asc_sign = chart_meta.get('ascendant_sign', 'Unknown')
-    asc_ruler = chart_meta.get('ascendant_ruler', 'Unknown')
+    fact_context = chart_meta.get("fact_sheet", "")
+    asc_sign = chart_meta.get("ascendant_sign", "Unknown")
+    asc_ruler = chart_meta.get("ascendant_ruler", "Unknown")
 
     # Format the rules
     rules_text = ""
@@ -19,7 +22,9 @@ def generate_horoscope_reading(predictions, chart_meta):
             r_text = item.get("rule", "")
             rules_text += f"- [Potential Rule for {r_type}] {r_text}\n"
     else:
-        rules_text = "No specific text rules found. Rely strictly on planetary positions."
+        rules_text = (
+            "No specific text rules found. Rely strictly on planetary positions."
+        )
 
     # --- 1. SYSTEM INSTRUCTION (The Persona) ---
     system_instruction = """
@@ -50,35 +55,37 @@ def generate_horoscope_reading(predictions, chart_meta):
     """
 
     # --- THE BRAIN SWITCHER ---
-    
+
     # OPTION A: CLOUD (Groq)
     if GROQ_API_KEY:
         print("☁️ Using Groq Cloud Brain...")
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
         payload = {
             # "llama-3.3-70b-versatile" is the newest, most robust model
-            "model": "llama-3.3-70b-versatile", 
+            "model": "llama-3.3-70b-versatile",
             "messages": [
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_message} # <--- SPLIT INTO USER MSG
+                {"role": "user", "content": user_message},  # <--- SPLIT INTO USER MSG
             ],
             "temperature": 0.1,
-            "max_tokens": 7000 
+            "max_tokens": 7000,
         }
         try:
             response = requests.post(url, json=payload, headers=headers)
-            
+
             # --- DEBUG BLOCK: PRINT ERROR DETAILS IF FAILED ---
             if response.status_code != 200:
                 print(f"❌ Groq API Error: {response.status_code}")
-                print(f"❌ Details: {response.text}") # <--- THIS WILL SHOW THE REAL REASON
+                print(
+                    f"❌ Details: {response.text}"
+                )  # <--- THIS WILL SHOW THE REAL REASON
                 response.raise_for_status()
-                
-            return response.json()['choices'][0]['message']['content']
+
+            return response.json()["choices"][0]["message"]["content"]
         except Exception as e:
             return f"Cloud Brain Error: {str(e)}"
 
@@ -91,7 +98,7 @@ def generate_horoscope_reading(predictions, chart_meta):
             "prompt": f"{system_instruction}\n\n{user_message}",
             "stream": False,
             "temperature": 0.1,
-            "num_ctx": 8192
+            "num_ctx": 8192,
         }
         try:
             response = requests.post(OLLAMA_URL, json=payload)
