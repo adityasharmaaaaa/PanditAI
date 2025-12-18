@@ -241,7 +241,7 @@ def predict_horoscope(d: BirthDetails):
                 "Pisces",
             ][asc_id],
             "destiny_score": score,
-            "house_structure": {},  # Added for compatibility if needed
+            "house_structure": {},
         }
         ai_reading = generate_horoscope_reading(rules, meta)
 
@@ -252,7 +252,7 @@ def predict_horoscope(d: BirthDetails):
             "ai_reading": ai_reading,
             "dasha": dasha_data,
             "yogas": yogas,
-            "jaimini_karakas": {},  # Added for schema compatibility
+            "jaimini_karakas": {},
         }
 
     except Exception as e:
