@@ -1,14 +1,5 @@
-import sys
-import os
-
-# --- PATH FIX: Allow running this file directly ---
-# This adds the project root (PanditAI/) to Python's search path
-current_dir = os.path.dirname(os.path.abspath(__file__))  # src/api/
-project_root = os.path.dirname(os.path.dirname(current_dir))  # PanditAI/
-sys.path.insert(0, project_root)
-# --------------------------------------------------
-
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from src.api.schemas import BirthDetails, ChartResponse
 from src.astronomy.engine import VedicAstroEngine
@@ -43,6 +34,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="PanditAI Core", version="0.4.0", lifespan=lifespan)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/calculate", response_model=ChartResponse)
