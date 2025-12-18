@@ -11,8 +11,6 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def generate_horoscope_reading(predictions, chart_meta):
     fact_context = chart_meta.get("fact_sheet", "")
-    asc_sign = chart_meta.get("ascendant_sign", "Unknown")
-    asc_ruler = chart_meta.get("ascendant_ruler", "Unknown")
 
     # Format the rules
     rules_text = ""
@@ -28,30 +26,50 @@ def generate_horoscope_reading(predictions, chart_meta):
 
     # --- 1. SYSTEM INSTRUCTION (The Persona) ---
     system_instruction = """
-    You are PanditAI, an exhaustive and detailed Vedic Astrologer.
-    Your mission is to generate a complete Birth Chart analysis covering ALL Planets and ALL 12 Houses.
-    Do not summarize. Be systematic.
+    You are PanditAI, an expert Vedic Astrologer.
+    You MUST return ONLY valid JSON. No markdown, no explanations, no extra text.
+    
+    **1. Lagna (The Self)**: Analyze Ascendant ({asc_sign}) and Ruler ({asc_ruler}).
+    **2. The 9 Grahas**: Iterate through Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.
+    **3. The 12 Bhavas**: Bullet point for EVERY House 1-12. Identify Ruler and placement.
+    The JSON must have EXACTLY these 6 keys:
+    - personality
+    - health
+    - money
+    - career
+    - love
+    - miscellaneous
+    
+    Each value must be a detailed, insightful string (2-3 paragraphs) based on Vedic astrology principles.
     """
 
     # --- 2. USER MESSAGE (The Data) ---
     user_message = f"""
-    Here is the birth chart data you must analyze.
+    Analyze this birth chart and return STRICT JSON format.
     
-    PART 1: THE FACTS (Absolute Truth)
+    CHART DATA:
     {fact_context}
     
-    PART 2: THE LIBRARY (Reference Rules)
+    REFERENCE RULES:
     {rules_text}
     
-    OUTPUT STRUCTURE REQUIRED:
-    **1. Lagna (The Self)**: Analyze Ascendant ({asc_sign}) and Ruler ({asc_ruler}).
-    **2. The 9 Grahas**: Iterate through Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.
-    **3. The 12 Bhavas**: Bullet point for EVERY House 1-12. Identify Ruler and placement.
-    **4. Final Synthesis**: Summary.
+    Return astrology prediction in STRICT JSON format.
     
-    CONSTRAINTS:
-    - Use FACTS to find Lords. Do not hallucinate.
-    - If a rule contradicts the facts, trust the facts.
+    Keys must be exactly:
+    personality
+    health
+    money
+    career
+    love
+    miscellaneous
+    
+    Each value must be a string (2-3 detailed paragraphs).
+    Do NOT add any extra keys.
+    Do NOT add explanations.
+    Do NOT add markdown.
+    Do NOT wrap in code blocks.
+    
+    Return ONLY the raw JSON object.
     """
 
     # --- THE BRAIN SWITCHER ---
@@ -69,7 +87,7 @@ def generate_horoscope_reading(predictions, chart_meta):
             "model": "llama-3.3-70b-versatile",
             "messages": [
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_message},  # <--- SPLIT INTO USER MSG
+                {"role": "user", "content": user_message},
             ],
             "temperature": 0.1,
             "max_tokens": 7000,
@@ -80,12 +98,36 @@ def generate_horoscope_reading(predictions, chart_meta):
             # --- DEBUG BLOCK: PRINT ERROR DETAILS IF FAILED ---
             if response.status_code != 200:
                 print(f"❌ Groq API Error: {response.status_code}")
-                print(
-                    f"❌ Details: {response.text}"
-                )  # <--- THIS WILL SHOW THE REAL REASON
+                print(f"❌ Details: {response.text}")
                 response.raise_for_status()
 
-            return response.json()["choices"][0]["message"]["content"]
+            raw_content = response.json()["choices"][0]["message"]["content"]
+
+            # Parse and validate JSON
+            try:
+                parsed_json = json.loads(raw_content)
+
+                # Validate required keys
+                required_keys = {
+                    "personality",
+                    "health",
+                    "money",
+                    "career",
+                    "love",
+                    "miscellaneous",
+                }
+                if not all(key in parsed_json for key in required_keys):
+                    print(
+                        "⚠️ Warning: LLM response missing required keys, returning raw content"
+                    )
+                    return raw_content
+
+                return parsed_json
+            except json.JSONDecodeError as e:
+                print(f"⚠️ Warning: Could not parse JSON from LLM: {e}")
+                print(f"Raw content: {raw_content[:200]}...")
+                return raw_content
+
         except Exception as e:
             return f"Cloud Brain Error: {str(e)}"
 

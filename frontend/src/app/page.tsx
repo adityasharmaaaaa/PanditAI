@@ -71,8 +71,15 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setResult(data);
       console.log("Backend response:", data);
+
+      // Store prediction in localStorage and redirect
+      if (data.ai_reading) {
+        localStorage.setItem("prediction", JSON.stringify(data.ai_reading));
+        window.location.href = "/prediction";
+      } else {
+        setError("No prediction data received from the server");
+      }
     } catch (err: any) {
       setError(err.message || "Failed to generate horoscope");
       console.error("Error:", err);
@@ -193,18 +200,6 @@ export default function Home() {
                 {loading ? "Generating..." : "Generate Horoscope"}
               </button>
             </form>
-
-            {/* Results Section */}
-            {result && (
-              <div className="mt-6 p-4 bg-white/5 border border-[#ff8c42]/20 rounded-lg">
-                <h4 className="text-lg font-bold mb-3 text-[#ff8c42]">
-                  Your Reading
-                </h4>
-                <div className="text-sm text-gray-300 whitespace-pre-wrap">
-                  {result.ai_reading || "No reading available"}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </main>
