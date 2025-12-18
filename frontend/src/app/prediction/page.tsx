@@ -64,9 +64,7 @@ export default function PredictionPage() {
                   transition-all duration-500
                   group-hover:scale-105 group-hover:shadow-[0_0_45px_rgba(168,85,247,0.45)]"
                 >
-                  <div className="text-5xl mb-4 opacity-80">
-                    {cat.icon}
-                  </div>
+                  <div className="text-5xl mb-4 opacity-80">{cat.icon}</div>
                   <div className="text-xl tracking-widest font-serif">
                     {cat.title}
                   </div>
@@ -84,7 +82,7 @@ export default function PredictionPage() {
               shadow-[0_0_60px_rgba(168,85,247,0.4)]"
             >
               <h2 className="text-4xl font-serif text-center mb-6 tracking-wider">
-                {categories.find(c => c.key === activeCard)?.title}
+                {categories.find((c) => c.key === activeCard)?.title}
               </h2>
 
               <p className="text-lg leading-relaxed text-center opacity-90 whitespace-pre-line">
@@ -116,7 +114,8 @@ export default function PredictionPage() {
       {showQuote && (
         <div className="absolute bottom-6 w-full text-center px-4 animate-fadeIn">
           <p className="text-sm tracking-wide text-white/70 font-serif">
-            Time is an unstoppable force. PanditAI helps you navigate its currents rather than fight them.
+            Time is an unstoppable force. PanditAI helps you navigate its
+            currents rather than fight them.
           </p>
         </div>
       )}
