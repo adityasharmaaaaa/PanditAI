@@ -2,100 +2,91 @@ import os
 import requests
 import json
 
-# Try to get the Groq Key from the environment
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+# --- 1. HOROSCOPE GENERATION ---
 def generate_horoscope_reading(predictions, chart_meta):
-    
-    fact_context = chart_meta.get('fact_sheet', '')
+    rich_context = chart_meta.get('fact_sheet', '')
     asc_sign = chart_meta.get('ascendant_sign', 'Unknown')
-    asc_ruler = chart_meta.get('ascendant_ruler', 'Unknown')
 
-    # Format the rules
-    rules_text = ""
-    if predictions:
-        for item in predictions:
-            r_type = item.get("type", "General")
-            r_text = item.get("rule", "")
-            rules_text += f"- [Potential Rule for {r_type}] {r_text}\n"
-    else:
-        rules_text = "No specific text rules found. Rely strictly on planetary positions."
-
-    # --- 1. SYSTEM INSTRUCTION (The Persona) ---
     system_instruction = """
-    You are PanditAI, an exhaustive and detailed Vedic Astrologer.
-    Your mission is to generate a complete Birth Chart analysis covering ALL Planets and ALL 12 Houses.
-    Do not summarize. Be systematic.
+    You are an empathetic, wise, and highly skilled Vedic Astrologer.
+    Your goal is to translate technical planetary positions into a **Holistic Life Analysis**.
+    
+    **AUDIENCE:** The user is a layperson. Do NOT use technical jargon without explaining it.
+    
+    **TONE:** - **Balanced:** Reframe "Brutally Honest Notes" as "Karmic Shadows" or "Psychological Challenges".
+    - **Empowering:** If a prediction is negative, frame it as "Requires conscious effort."
+    - **Remedial:** Suggest a mindset shift for every problem.
+
+    **STRUCTURE:**
+    Organize the output into these exact Markdown sections:
+    ### 🦁 Self & Personality
+    ### 💼 Career, Wealth & Purpose
+    ### ❤️ Love, Relationships & Family
+    ### 🧘 Health & Inner Well-being
+    ### 🔮 Karmic Path & Remedial Guidance
+
+    **DATA USAGE:**
+    - Use the provided "DATA CONTEXT" to form your opinions.
     """
 
-    # --- 2. USER MESSAGE (The Data) ---
     user_message = f"""
-    Here is the birth chart data you must analyze.
-    
-    PART 1: THE FACTS (Absolute Truth)
-    {fact_context}
-    
-    PART 2: THE LIBRARY (Reference Rules)
-    {rules_text}
-    
-    OUTPUT STRUCTURE REQUIRED:
-    **1. Lagna (The Self)**: Analyze Ascendant ({asc_sign}) and Ruler ({asc_ruler}).
-    **2. The 9 Grahas**: Iterate through Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.
-    **3. The 12 Bhavas**: Bullet point for EVERY House 1-12. Identify Ruler and placement.
-    **4. Final Synthesis**: Summary.
-    
-    CONSTRAINTS:
-    - Use FACTS to find Lords. Do not hallucinate.
-    - If a rule contradicts the facts, trust the facts.
+    *** ASTROLOGICAL DATA ***
+    Ascendant: {asc_sign}
+    {rich_context}
+    *** INSTRUCTIONS ***
+    Analyze this data and generate the 5-section Life Report.
     """
 
-    # --- THE BRAIN SWITCHER ---
+    return call_llm(system_instruction, user_message)
+
+# --- 2. CHATBOT FUNCTION (THE MISSING PIECE) ---
+def chat_with_astrologer(user_query, chart_context):
+    system_instruction = """
+    You are PanditAI, a wise and empathetic Vedic Astrologer.
+    You have access to the user's specific birth chart details in the Context provided.
     
-    # OPTION A: CLOUD (Groq)
+    RULES:
+    1. **Personalize:** Always refer to the specific planetary placements in the context.
+    2. **Be Honest but Kind:** If the context mentions negative traits, guide them on how to overcome them.
+    3. **Stay Relevant:** Only answer astrological questions.
+    4. **Concise:** Keep answers under 150 words.
+    """
+
+    user_message = f"CONTEXT:\n{chart_context}\n\nUSER QUESTION:\n{user_query}"
+    return call_llm(system_instruction, user_message)
+
+# --- 3. HELPER: CALL LLM ---
+def call_llm(system_instruction, user_message):
     if GROQ_API_KEY:
-        print("☁️ Using Groq Cloud Brain...")
         url = "https://api.groq.com/openai/v1/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json"
-        }
+        headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
         payload = {
-            # "llama-3.3-70b-versatile" is the newest, most robust model
-            "model": "llama-3.3-70b-versatile", 
+            "model": "llama-3.3-70b-versatile",
             "messages": [
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_message} # <--- SPLIT INTO USER MSG
+                {"role": "user", "content": user_message}
             ],
-            "temperature": 0.1,
-            "max_tokens": 7000 
+            "temperature": 0.5,
+            "max_tokens": 1500
         }
         try:
             response = requests.post(url, json=payload, headers=headers)
-            
-            # --- DEBUG BLOCK: PRINT ERROR DETAILS IF FAILED ---
-            if response.status_code != 200:
-                print(f"❌ Groq API Error: {response.status_code}")
-                print(f"❌ Details: {response.text}") # <--- THIS WILL SHOW THE REAL REASON
-                response.raise_for_status()
-                
             return response.json()['choices'][0]['message']['content']
         except Exception as e:
-            return f"Cloud Brain Error: {str(e)}"
-
-    # OPTION B: LOCAL (Ollama)
+            return f"Error connecting to Groq: {e}"
     else:
-        print("💻 Using Local Ollama Brain...")
+        # Local Ollama Fallback
         OLLAMA_URL = "http://localhost:11434/api/generate"
         payload = {
             "model": "llama3.2",
             "prompt": f"{system_instruction}\n\n{user_message}",
             "stream": False,
-            "temperature": 0.1,
-            "num_ctx": 8192
+            "temperature": 0.5
         }
         try:
             response = requests.post(OLLAMA_URL, json=payload)
-            response.raise_for_status()
-            return response.json()["response"]
+            return response.json()['response']
         except Exception as e:
-            return f"Local Brain Error: {str(e)}"
+            return f"Error connecting to Ollama: {e}"

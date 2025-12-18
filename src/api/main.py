@@ -1,170 +1,201 @@
-import sys
+import json
 import os
-
-# --- PATH FIX: Allow running this file directly ---
-# This adds the project root (PanditAI/) to Python's search path
-current_dir = os.path.dirname(os.path.abspath(__file__)) # src/api/
-project_root = os.path.dirname(os.path.dirname(current_dir)) # PanditAI/
-sys.path.insert(0, project_root)
-# --------------------------------------------------
-
+import uvicorn
+import torch
+import torch.nn as nn
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
-from contextlib import asynccontextmanager
-from src.api.schemas import BirthDetails, ChartResponse
+from pydantic import BaseModel
+from src.api.schemas import BirthDetails
 from src.astronomy.engine import VedicAstroEngine
-from src.astronomy.vargas import calculate_d9_navamsa
-from src.astronomy.jaimini import get_chara_karakas
-from src.astronomy.aspects import get_planet_aspects
-from src.astronomy.arudhas import calculate_arudha_padas
-from src.knowledge_graph.query import PanditGraphQuery
-from src.model.inference import generate_horoscope_reading
+from src.astronomy.dasha import VimshottariDasha
+from src.astronomy.transits import TransitEngine
+from src.astronomy.match import MatchMaker
+from src.model.inference import generate_horoscope_reading, chat_with_astrologer
 
-# --- GLOBAL DATABASE INSTANCE ---
-graph_db = None
+app = FastAPI(title="PanditAI: Neuro-Symbolic Engine")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    global graph_db
+# ==========================================
+# 1. INITIALIZE ENGINES
+# ==========================================
+astro_engine = VedicAstroEngine()
+dasha_engine = VimshottariDasha()
+transit_engine = TransitEngine()
+match_engine = MatchMaker()
+
+# ==========================================
+# 2. LOAD PREDICTION DATA
+# ==========================================
+PREDICTION_DB = {}
+# Load Planets
+p_path = os.path.join("data", "planets_data.json")
+if os.path.exists(p_path):
+    with open(p_path, "r", encoding="utf-8") as f:
+        for item in json.load(f): PREDICTION_DB[item["id"]] = item
+
+# Load Lords
+l_path = os.path.join("data", "house_lords.json")
+if os.path.exists(l_path):
+    with open(l_path, "r", encoding="utf-8") as f:
+        for item in json.load(f): PREDICTION_DB[item["id"]] = item
+
+# ==========================================
+# 3. DEEP LEARNING MODEL
+# ==========================================
+class DestinyNet(nn.Module):
+    def __init__(self):
+        super(DestinyNet, self).__init__()
+        self.fc1 = nn.Linear(18, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 32)
+        self.fc4 = nn.Linear(32, 1)
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        return self.sigmoid(self.fc4(self.relu(self.fc3(self.relu(self.fc2(self.relu(self.fc1(x))))))))
+
+destiny_model = DestinyNet()
+if os.path.exists("models/destiny_net.pth"):
     try:
-        print("🔌 Initializing Knowledge Graph Connection...")
-        graph_db = PanditGraphQuery()
-        print("✅ Graph Connected.")
-    except Exception as e:
-        print(f"⚠️ Warning: Could not connect to Neo4j: {e}")
-        print("   The API will function, but 'AI Readings' will be limited.")
-        graph_db = None
-    
-    yield
-    
-    if graph_db:
-        print("🔌 Closing Graph Connection...")
-        graph_db.close()
+        destiny_model.load_state_dict(torch.load("models/destiny_net.pth"))
+        destiny_model.eval()
+        print("✅ DL Model Loaded")
+    except:
+        print("⚠️ DL Model Load Failed")
 
-app = FastAPI(title="PanditAI Core", version="0.4.0", lifespan=lifespan)
+def get_dl_vector(chart):
+    vec = []
+    for p in ["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn","Rahu","Ketu"]:
+        if p in chart: vec.extend([chart[p]["sign_id"], chart[p].get("house_number",1)])
+        else: vec.extend([0,0])
+    return torch.tensor([vec], dtype=torch.float32)
 
-@app.post("/calculate", response_model=ChartResponse)
-async def calculate_chart(input: BirthDetails):
-    global graph_db
+# ==========================================
+# 4. HELPER: RULE KEY GENERATOR
+# ==========================================
+def get_rules_for_chart(chart, asc_id):
+    found_rules = []
+    text_summary = "=== PLANETARY PLACEMENTS ===\n"
     
+    # Planets
+    for p, data in chart.items():
+        if p == "Ascendant": continue
+        h = data["house_number"]
+        sign_short = ["ARI","TAU","GEM","CAN","LEO","VIR","LIB","SCO","SAG","CAP","AQU","PIS"][data["sign_id"]]
+        p_short = {"Sun":"SUN","Moon":"MOON","Mars":"MAR","Mercury":"MER","Jupiter":"JUP","Venus":"VEN","Saturn":"SAT","Rahu":"RAH","Ketu":"KET"}.get(p)
+        
+        if p_short:
+            key = f"{p_short}_{sign_short}_H{h}"
+            if key in PREDICTION_DB:
+                rule = PREDICTION_DB[key]
+                found_rules.append(rule)
+                text_summary += f"* {p} in House {h}: {rule.get('prediction','')}\n"
+                
+    return found_rules, text_summary
+
+# ==========================================
+# 5. API ENDPOINTS
+# ==========================================
+
+@app.post("/predict")
+def predict_horoscope(d: BirthDetails):
     try:
-        # 1. Astronomical Calculations
-        engine = VedicAstroEngine(ayanamsa=input.ayanamsa)
-        chart_data = engine.calculate_chart(
-            input.year, input.month, input.day,
-            input.hour, input.minute,
-            input.latitude, input.longitude,
-            input.timezone
-        )
+        # A. Calculate Chart
+        chart = astro_engine.calculate_chart(d.year, d.month, d.day, d.hour, d.minute, d.latitude, d.longitude, d.timezone)
+        asc_id = chart["Ascendant"]["sign_id"]
         
-        # 2. House & Ruler Logic
-        signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", 
-                 "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
+        # B. Assign House Numbers
+        for p, data in chart.items():
+            if p!="Ascendant": data["house_number"] = (data["sign_id"] - asc_id) % 12 + 1
         
-        RULER_MAP = {
-            "Aries": "Mars", "Taurus": "Venus", "Gemini": "Mercury", "Cancer": "Moon",
-            "Leo": "Sun", "Virgo": "Mercury", "Libra": "Venus", "Scorpio": "Mars",
-            "Sagittarius": "Jupiter", "Capricorn": "Saturn", "Aquarius": "Saturn", "Pisces": "Jupiter"
+        # C. DL Score
+        score = 50
+        try: score = int(destiny_model(get_dl_vector(chart)).item() * 100)
+        except: pass
+        
+        # D. Get Rules
+        rules, fact_sheet = get_rules_for_chart(chart, asc_id)
+        
+        # E. DASHA CALCULATION (THE NEW PART)
+        dasha_data = {"timeline": [], "current": {}}
+        if "Moon" in chart:
+            moon_deg = chart["Moon"]["absolute_longitude"]
+            birth_dt = datetime(d.year, d.month, d.day, d.hour, d.minute)
+            
+            # 1. Get the Deep Nested Tree
+            raw_timeline = dasha_engine.calculate_dashas(moon_deg, birth_dt)
+            # 2. Get Current Moment
+            raw_current = dasha_engine.get_current_dasha_details(raw_timeline)
+            
+            # 3. Recursive Serializer
+            def serialize_node(node):
+                # Base object
+                obj = {
+                    "lord": node["lord"],
+                    "start": node["start"].strftime("%Y-%m-%d"),
+                    "end": node["end"].strftime("%Y-%m-%d"),
+                    "type": node.get("type", "Unknown")
+                }
+                # Recursion for sub-periods
+                if "sub_periods" in node and node["sub_periods"]:
+                    obj["sub_periods"] = [serialize_node(child) for child in node["sub_periods"]]
+                return obj
+
+            # Serialize the whole tree
+            dasha_data["timeline"] = [serialize_node(md) for md in raw_timeline]
+            
+            # Serialize Current
+            if raw_current:
+                for k, v in raw_current.items():
+                    dasha_data["current"][k] = {
+                        "lord": v["lord"],
+                        "start": v["start"].strftime("%Y-%m-%d"),
+                        "end": v["end"].strftime("%Y-%m-%d")
+                    }
+
+        # F. AI Generation
+        meta = {
+            "fact_sheet": fact_sheet, 
+            "ascendant_sign": ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"][asc_id], 
+            "destiny_score": score
         }
-
-        asc_sign_id = chart_data["Ascendant"]["sign_id"]
-        asc_sign_name = signs[asc_sign_id]
-        asc_ruler_name = RULER_MAP[asc_sign_name]
-
-        house_details = {} 
-        for h in range(1, 13):
-            current_sign_id = (asc_sign_id + h - 1) % 12
-            s_name = signs[current_sign_id]
-            house_details[f"House {h}"] = {"Sign": s_name, "Ruler": RULER_MAP[s_name]}
-
-        for p_name, data in chart_data.items():
-            if p_name == "Ascendant": continue
-            p_sign = data["sign_id"]
-            
-            house_num = (p_sign - asc_sign_id) + 1
-            if house_num <= 0: house_num += 12
-            data["house_number"] = house_num
-            
-            if "absolute_longitude" in data:
-                data["navamsa_sign_id"] = calculate_d9_navamsa(data["absolute_longitude"])
-
-        # 3. Advanced Calculations
-        aspect_list = get_planet_aspects(chart_data)
-        arudha_data = calculate_arudha_padas(chart_data, house_details)
-        karakas = get_chara_karakas(chart_data)
-
-        # 4. Retrieval (RAG)
-        predictions = []
-        if graph_db:
-            try:
-                # Support both new and old query.py versions
-                if hasattr(graph_db, 'get_comprehensive_rules'):
-                    predictions = graph_db.get_comprehensive_rules(chart_data, house_details)
-                else:
-                    for p_name, p_data in chart_data.items():
-                        if p_name == "Ascendant": continue
-                        h_num = p_data.get("house_number")
-                        rules = graph_db.get_rules_for_planet_in_house(p_name, h_num)
-                        for r in rules:
-                            predictions.append({
-                                "type": "Placement",
-                                "rule": r.get("rule_text", r.get("text", "")),
-                                "condition": r.get("condition", "")
-                            })
-            except Exception as e:
-                print(f"❌ Graph Query Error: {e}")
-
-        # 5. Build Context for LLM
-        # Ensure this block in main.py is strictly creating the string
-        fact_sheet = "--- SECTION 1: IDENTITY ---\n"
-        fact_sheet += f"ASCENDANT: {asc_sign_name} (Ruled by {asc_ruler_name})\n"
-        
-        fact_sheet += "\n--- SECTION 2: PLANETARY POSITIONS ---\n"
-        for p_name, p_data in chart_data.items():
-            if p_name == "Ascendant": continue
-            s_name = signs[p_data["sign_id"]]
-            h_num = p_data['house_number']
-            
-            # Explicitly formatting the line to be unambiguous for the AI
-            fact_sheet += f"Planet: {p_name} | Sign: {s_name} | House: {h_num}\n"
-
-        fact_sheet += "\n--- SECTION 3: NAVAMSA (D9) ---\n"
-        for p_name, p_data in chart_data.items():
-            if "navamsa_sign_id" in p_data:
-                fact_sheet += f"- {p_name} (D9): {signs[p_data['navamsa_sign_id']]}\n"
-
-        fact_sheet += "\n--- SECTION 4: ASPECTS & SPECIAL LAGNAS ---\n"
-        if aspect_list:
-            for aspect in aspect_list: fact_sheet += f"- {aspect}\n"
-        
-        ul_sign = arudha_data.get("UL (Upapada)", {}).get("sign", "Unknown")
-        fact_sheet += f"- Upapada Lagna (UL): {ul_sign}\n"
-        fact_sheet += f"- Atmakaraka (Soul): {karakas.get('Atmakaraka (AK)', {}).get('name')}\n"
-
-        chart_meta = {
-            "ascendant_sign": asc_sign_name,
-            "ascendant_ruler": asc_ruler_name,
-            "fact_sheet": fact_sheet,
-            "house_structure": house_details
-        }
-
-        # 6. Generate AI Reading
-        reading_text = generate_horoscope_reading(predictions, chart_meta)
+        ai_reading = generate_horoscope_reading(rules, meta)
 
         return {
-            "meta": chart_meta,
-            "planets": chart_data,
-            "jaimini_karakas": karakas,
-            "predictions": predictions,
-            "ai_reading": reading_text
+            "planets": chart,
+            "predictions": rules,
+            "meta": meta,
+            "ai_reading": ai_reading,
+            "dasha": dasha_data
         }
-        
+
     except Exception as e:
-        print(f"🔥 Critical Server Error: {e}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/daily_forecast")
+def daily_forecast(d: BirthDetails):
+    c = astro_engine.calculate_chart(d.year, d.month, d.day, d.hour, d.minute, d.latitude, d.longitude, d.timezone)
+    # Re-calculate chart for ascendant context
+    return {"transits": transit_engine.calculate_current_transits(c, {"lat":d.latitude, "lon":d.longitude, "tz":d.timezone})}
+
+class MatchRequest(BaseModel): p1: BirthDetails; p2: BirthDetails
+@app.post("/match")
+def match_charts(r: MatchRequest):
+    c1 = astro_engine.calculate_chart(r.p1.year, r.p1.month, r.p1.day, r.p1.hour, r.p1.minute, r.p1.latitude, r.p1.longitude, r.p1.timezone)
+    c2 = astro_engine.calculate_chart(r.p2.year, r.p2.month, r.p2.day, r.p2.hour, r.p2.minute, r.p2.latitude, r.p2.longitude, r.p2.timezone)
+    analysis = match_engine.calculate_compatibility(c1, c2)
+    # Quick AI Summary
+    prompt = f"Analyze compatibility. P1 Ascendant: {c1['Ascendant']['sign_id']}, P2 Ascendant: {c2['Ascendant']['sign_id']}. Analysis: {analysis}"
+    verdict = chat_with_astrologer(prompt, "Relationship Context")
+    return {"analysis": analysis, "ai_verdict": verdict}
+
+class ChatRequest(BaseModel): query: str; context: str
+@app.post("/chat")
+def chat_endpoint(r: ChatRequest):
+    return {"response": chat_with_astrologer(r.query, r.context)}
+
 if __name__ == "__main__":
-    import uvicorn
-    # Use standard uvicorn string format to allow reload
-    uvicorn.run("src.api.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

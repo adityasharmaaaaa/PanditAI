@@ -1,135 +1,164 @@
+import sys
+import os
+
+# 1. FIX MODULE PATH (So python can find 'src')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 import streamlit as st
 import requests
-import json
+import pandas as pd
 from datetime import datetime, time
+import io
+# Import the PDF Generator
+from src.utils.pdf_generator import PDFReportGenerator
 
-# Config
-API_URL = "http://127.0.0.1:8000/calculate"
+# --- CONFIGURATION ---
+BASE = "http://127.0.0.1:8000"
 st.set_page_config(page_title="PanditAI", page_icon="🕉️", layout="wide")
+st.title("🕉️ PanditAI: Vedic Life Architect")
 
-# Custom CSS for "Mystical" Vibe
-st.markdown("""
-<style>
-    .reportview-container {
-        background: #f0f2f6
-    }
-    .main-header {
-        font-family: 'Helvetica Neue', sans-serif;
-        color: #4B0082;
-    }
-    .prediction-box {
-        background-color: #f9f9f9;
-        border-left: 5px solid #6c5ce7;
-        padding: 20px;
-        border-radius: 5px;
-        margin-top: 20px;
-        color: #000000; /* <--- FORCE TEXT TO BE BLACK */
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- SESSION STATE ---
+if "chat" not in st.session_state: st.session_state["chat"] = []
+if "transits" not in st.session_state: st.session_state["transits"] = None
 
-# Header
-st.title("🕉️ PanditAI: Neuro-Symbolic Vedic Astrologer")
-st.markdown("### *Grounded in BPHS, Powered by Llama 3*")
+# --- SIDEBAR MODE SELECTOR ---
+mode = st.sidebar.radio("Select Mode", ["👤 Individual Destiny", "❤️ Relationship Match"])
 
-# Input Form (Sidebar)
-with st.sidebar:
-    st.header("Enter Birth Details")
-    
-    # Date & Time
-    b_date = st.date_input(
-        "Date of Birth", 
-        value=datetime(1990, 5, 15),
-        min_value=datetime(1900, 1, 1),
-        max_value=datetime(2100, 12, 31)
-    )
-    b_time = st.time_input("Time of Birth", value=time(14, 0))
-    
-    # Location (Simple Manual Input for now)
-    st.subheader("Location Coordinates")
-    lat = st.number_input("Latitude", value=28.61, format="%.2f", help="Positive for North, Negative for South")
-    lon = st.number_input("Longitude", value=77.20, format="%.2f", help="Positive for East, Negative for West")
-    tz = st.number_input("Timezone (Offset from UTC)", value=5.5, step=0.5, help="India is 5.5, EST is -5.0")
-    
-    ayanamsa = st.selectbox("Ayanamsa", ["LAHIRI", "RAMAN"])
-    
-    submit = st.button("Generate Horoscope 🔮", type="primary")
+# ==========================================
+# MODE 1: INDIVIDUAL DESTINY
+# ==========================================
+if mode == "👤 Individual Destiny":
+    with st.sidebar:
+        st.header("Birth Details")
+        name = st.text_input("Name", value="Aditya")
+        d = st.date_input("Date", datetime(1990, 5, 15))
+        t = st.time_input("Time", time(14, 30))
+        lat = st.number_input("Lat", 28.61); lon = st.number_input("Lon", 77.20); tz = st.number_input("TZ", 5.5)
+        
+        # ACTION BUTTONS
+        if st.button("Analyze Chart", type="primary"):
+            dt = datetime.combine(d, t)
+            payload = {"year": dt.year, "month": dt.month, "day": dt.day, "hour": dt.hour, "minute": dt.minute, "latitude": lat, "longitude": lon, "timezone": tz, "ayanamsa": "LAHIRI"}
+            with st.spinner("Calculating..."):
+                res = requests.post(f"{BASE}/predict", json=payload)
+                if res.status_code == 200: st.session_state["data"] = res.json()
+                else: st.error("Backend Error")
+        
+        if st.button("Check Transits"):
+            dt = datetime.combine(d, t)
+            payload = {"year": dt.year, "month": dt.month, "day": dt.day, "hour": dt.hour, "minute": dt.minute, "latitude": lat, "longitude": lon, "timezone": tz, "ayanamsa": "LAHIRI"}
+            res = requests.post(f"{BASE}/daily_forecast", json=payload)
+            if res.status_code == 200: st.session_state["transits"] = res.json()["transits"]
 
-# Main Logic
-if submit:
-    # Prepare Payload
-    payload = {
-        "year": b_date.year,
-        "month": b_date.month,
-        "day": b_date.day,
-        "hour": b_time.hour,
-        "minute": b_time.minute,
-        "timezone": tz,
-        "latitude": lat,
-        "longitude": lon,
-        "ayanamsa": ayanamsa
-    }
-    
-    with st.spinner("Consulting the stars and querying the Knowledge Graph..."):
-        try:
-            response = requests.post(API_URL, json=payload)
-            response.raise_for_status()
-            data = response.json()
+        if st.button("📄 Generate PDF"):
+            if "data" in st.session_state:
+                buf = io.BytesIO()
+                gen = PDFReportGenerator(buf)
+                gen.create_report(name, st.session_state["data"])
+                st.download_button("Download PDF", buf.getvalue(), f"{name}_Destiny.pdf", "application/pdf")
+
+    # MAIN CONTENT
+    if "data" in st.session_state:
+        data = st.session_state["data"]
+        
+        # 1. TRANSITS (If loaded)
+        if st.session_state["transits"]:
+            with st.expander("🌌 Today's Sky (Transits)", expanded=True):
+                cols = st.columns(3)
+                for i, tr in enumerate(st.session_state["transits"]):
+                    icon = "🪐" if tr['planet'] in ["Saturn","Jupiter","Mars"] else "⚪"
+                    cols[i%3].info(f"**{icon} {tr['planet']}** in H{tr['transiting_house']}\n\n{tr['prediction']}")
+
+        # 2. SCORECARD
+        sc = data["meta"]["destiny_score"]
+        c1, c2 = st.columns([1,3])
+        c1.metric("Destiny Score", f"{sc}/100")
+        c2.progress(sc)
+        
+        # 3. TABS
+        t1, t2, t3, t4 = st.tabs(["🔮 Analysis", "⏳ Timeline", "📐 Technical", "💬 Chat"])
+        
+        # TAB 1: AI Reading
+        with t1: st.markdown(data["ai_reading"])
+        
+        # TAB 2: INTERACTIVE DASHA (THE FIX)
+        with t2:
+            st.subheader("⏳ Interactive Dasha Explorer")
+            st.caption("Drill down from Major Periods (Years) to Micro Periods (Days).")
             
-            # --- DISPLAY RESULTS ---
+            # Get Timeline
+            full_timeline = data["dasha"]["timeline"]
             
-            # 1. The AI Reading (Hero Section)
-            st.markdown("---")
-            st.subheader("📜 The Pandit's Reading")
-            if data.get("ai_reading"):
-                st.markdown(f"""
-                <div class="prediction-box">
-                    {data['ai_reading'].replace(chr(10), '<br>')}
-                </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.warning("No specific text rules found for this chart in the current graph.")
-
-            # 2. Planetary Table (The Math)
-            st.markdown("---")
-            st.subheader("🪐 Planetary Positions (Sidereal)")
+            # --- LEVEL 1: MAHADASHA SELECTOR ---
+            md_opts = [f"{m['lord']} ({m['start']} ➝ {m['end']})" for m in full_timeline]
+            sel_md_idx = st.selectbox("Select Mahadasha", range(len(md_opts)), format_func=lambda x: md_opts[x])
+            curr_md = full_timeline[sel_md_idx]
             
-            planet_rows = []
-            signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
-            
-            # Helper function to format rows
-            def format_row(p_name, p_data):
-                sign_name = signs[p_data["sign_id"]]
-                deg = int(p_data["degree"])
-                mins = int((p_data["degree"] - deg) * 60)
-                retro = " (R)" if p_data.get("is_retrograde") else ""
+            # --- LEVEL 2: ANTARDASHA ---
+            if "sub_periods" in curr_md and curr_md["sub_periods"]:
+                st.markdown(f"**📂 Antardashas within {curr_md['lord']}**")
+                ad_list = curr_md["sub_periods"]
+                ad_opts = [f"{a['lord']} ({a['start']} ➝ {a['end']})" for a in ad_list]
                 
-                return {
-                    "Planet": p_name,
-                    "Sign": sign_name,
-                    "Position": f"{deg}° {mins}'{retro}",
-                    "House": p_data.get("house_number", 1) # Ascendant is always House 1
-                }
-
-            # 1. Add Ascendant (Lagna) First
-            if "Ascendant" in data["planets"]:
-                planet_rows.append(format_row("Ascendant", data["planets"]["Ascendant"]))
-
-            # 2. Add Planets in Standard Vedic Order
-            sort_order = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu"]
-            
-            for p_name in sort_order:
-                if p_name in data["planets"]:
-                    planet_rows.append(format_row(p_name, data["planets"][p_name]))
-            
-            # Display the table
-            st.table(planet_rows)
-            
-            # 3. Technical Details
-            with st.expander("Show Technical Details (JSON)"):
-                st.json(data)
+                sel_ad_idx = st.selectbox(f"Select Antardasha", range(len(ad_opts)), format_func=lambda x: ad_opts[x])
+                curr_ad = ad_list[sel_ad_idx]
                 
-        except requests.exceptions.ConnectionError:
-            st.error("❌ Could not connect to the Backend API. Is 'uvicorn' running?")
-        except Exception as e:
-            st.error(f"❌ An error occurred: {e}")
+                # Show Table (Remove nested objects)
+                st.dataframe(pd.DataFrame(ad_list).drop(columns=["sub_periods", "type"], errors="ignore"), use_container_width=True)
+
+                # --- LEVEL 3: PRATYANTAR ---
+                if "sub_periods" in curr_ad and curr_ad["sub_periods"]:
+                    st.divider()
+                    st.markdown(f"**📂 Pratyantars within {curr_ad['lord']}**")
+                    pd_list = curr_ad["sub_periods"]
+                    pd_opts = [f"{p['lord']} ({p['start']} ➝ {p['end']})" for p in pd_list]
+                    
+                    sel_pd_idx = st.selectbox(f"Select Pratyantar", range(len(pd_opts)), format_func=lambda x: pd_opts[x])
+                    curr_pd = pd_list[sel_pd_idx]
+                    
+                    st.dataframe(pd.DataFrame(pd_list).drop(columns=["sub_periods", "type"], errors="ignore"), use_container_width=True)
+                    
+                    # --- LEVEL 4: SOOKSHMA ---
+                    if "sub_periods" in curr_pd and curr_pd["sub_periods"]:
+                        st.divider()
+                        st.markdown(f"**📂 Sookshmas within {curr_pd['lord']}**")
+                        sd_list = curr_pd["sub_periods"]
+                        st.dataframe(pd.DataFrame(sd_list).drop(columns=["sub_periods", "type"], errors="ignore"), use_container_width=True)
+
+        # TAB 3: TECHNICAL
+        with t3:
+            rows = [{"Planet":p, "Sign": d["sign_id"], "House": d.get("house_number"), "Deg": f"{d['degree']:.2f}"} for p,d in data["planets"].items()]
+            st.dataframe(pd.DataFrame(rows))
+            
+        # TAB 4: CHAT
+        with t4:
+            for m in st.session_state["chat"]: st.chat_message(m["role"]).write(m["content"])
+            if q := st.chat_input("Ask PanditAI..."):
+                st.session_state["chat"].append({"role":"user","content":q})
+                st.chat_message("user").write(q)
+                ctx = data["meta"]["fact_sheet"]
+                res = requests.post(f"{BASE}/chat", json={"query":q, "context": ctx}).json()["response"]
+                st.session_state["chat"].append({"role":"assistant","content":res})
+                st.chat_message("assistant").write(res)
+
+# ==========================================
+# MODE 2: RELATIONSHIP MATCH
+# ==========================================
+elif mode == "❤️ Relationship Match":
+    c1, c2 = st.columns(2)
+    with c1: st.subheader("Partner A"); d1 = st.date_input("Date A", datetime(1990,1,1)); t1 = st.time_input("Time A", time(12,0))
+    with c2: st.subheader("Partner B"); d2 = st.date_input("Date B", datetime(1995,1,1)); t2 = st.time_input("Time B", time(12,0))
+    
+    if st.button("Check Match"):
+        p = {"latitude": 28.61, "longitude": 77.20, "timezone": 5.5, "ayanamsa": "LAHIRI"}
+        pl = {"p1": {**p, "year":d1.year, "month":d1.month, "day":d1.day, "hour":t1.hour, "minute":t1.minute},
+              "p2": {**p, "year":d2.year, "month":d2.month, "day":d2.day, "hour":t2.hour, "minute":t2.minute}}
+        
+        res = requests.post(f"{BASE}/match", json=pl).json()
+        ana = res["analysis"]
+        
+        st.divider()
+        st.metric("Mars Dosha", ana["manglik"]["status"])
+        st.caption(ana["manglik"]["desc"])
+        st.metric("Emotional Sync", f"{ana['emotional']['score']}/100")
+        st.info(f"AI Verdict: {res['ai_verdict']}")
