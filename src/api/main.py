@@ -7,10 +7,13 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.api.schemas import BirthDetails
+
+# --- IMPORT ENGINES ---
 from src.astronomy.engine import VedicAstroEngine
 from src.astronomy.dasha import VimshottariDasha
 from src.astronomy.transits import TransitEngine
 from src.astronomy.match import MatchMaker
+from src.astronomy.yogas import YogaEngine  # <--- NEW IMPORT
 from src.model.inference import generate_horoscope_reading, chat_with_astrologer
 
 app = FastAPI(title="PanditAI: Neuro-Symbolic Engine")
@@ -22,18 +25,17 @@ astro_engine = VedicAstroEngine()
 dasha_engine = VimshottariDasha()
 transit_engine = TransitEngine()
 match_engine = MatchMaker()
+yoga_engine = YogaEngine()  # <--- NEW INIT
 
 # ==========================================
 # 2. LOAD PREDICTION DATA
 # ==========================================
 PREDICTION_DB = {}
-# Load Planets
 p_path = os.path.join("data", "planets_data.json")
 if os.path.exists(p_path):
     with open(p_path, "r", encoding="utf-8") as f:
         for item in json.load(f): PREDICTION_DB[item["id"]] = item
 
-# Load Lords
 l_path = os.path.join("data", "house_lords.json")
 if os.path.exists(l_path):
     with open(l_path, "r", encoding="utf-8") as f:
@@ -78,7 +80,6 @@ def get_rules_for_chart(chart, asc_id):
     found_rules = []
     text_summary = "=== PLANETARY PLACEMENTS ===\n"
     
-    # Planets
     for p, data in chart.items():
         if p == "Ascendant": continue
         h = data["house_number"]
@@ -101,7 +102,7 @@ def get_rules_for_chart(chart, asc_id):
 @app.post("/predict")
 def predict_horoscope(d: BirthDetails):
     try:
-        # A. Calculate Chart
+        # A. Calculate Chart (D1 & D9)
         chart = astro_engine.calculate_chart(d.year, d.month, d.day, d.hour, d.minute, d.latitude, d.longitude, d.timezone)
         asc_id = chart["Ascendant"]["sign_id"]
         
@@ -117,35 +118,29 @@ def predict_horoscope(d: BirthDetails):
         # D. Get Rules
         rules, fact_sheet = get_rules_for_chart(chart, asc_id)
         
-        # E. DASHA CALCULATION (THE NEW PART)
+        # E. DASHA CALCULATION
         dasha_data = {"timeline": [], "current": {}}
         if "Moon" in chart:
             moon_deg = chart["Moon"]["absolute_longitude"]
             birth_dt = datetime(d.year, d.month, d.day, d.hour, d.minute)
             
-            # 1. Get the Deep Nested Tree
             raw_timeline = dasha_engine.calculate_dashas(moon_deg, birth_dt)
-            # 2. Get Current Moment
             raw_current = dasha_engine.get_current_dasha_details(raw_timeline)
             
-            # 3. Recursive Serializer
+            # Recursive Serializer
             def serialize_node(node):
-                # Base object
                 obj = {
                     "lord": node["lord"],
                     "start": node["start"].strftime("%Y-%m-%d"),
                     "end": node["end"].strftime("%Y-%m-%d"),
                     "type": node.get("type", "Unknown")
                 }
-                # Recursion for sub-periods
                 if "sub_periods" in node and node["sub_periods"]:
                     obj["sub_periods"] = [serialize_node(child) for child in node["sub_periods"]]
                 return obj
 
-            # Serialize the whole tree
             dasha_data["timeline"] = [serialize_node(md) for md in raw_timeline]
             
-            # Serialize Current
             if raw_current:
                 for k, v in raw_current.items():
                     dasha_data["current"][k] = {
@@ -154,7 +149,10 @@ def predict_horoscope(d: BirthDetails):
                         "end": v["end"].strftime("%Y-%m-%d")
                     }
 
-        # F. AI Generation
+        # F. YOGA CALCULATION (NEW)
+        yogas = yoga_engine.check_yogas(chart)
+
+        # G. AI Generation
         meta = {
             "fact_sheet": fact_sheet, 
             "ascendant_sign": ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"][asc_id], 
@@ -167,7 +165,8 @@ def predict_horoscope(d: BirthDetails):
             "predictions": rules,
             "meta": meta,
             "ai_reading": ai_reading,
-            "dasha": dasha_data
+            "dasha": dasha_data,
+            "yogas": yogas # <--- Return Yogas
         }
 
     except Exception as e:
@@ -178,7 +177,6 @@ def predict_horoscope(d: BirthDetails):
 @app.post("/daily_forecast")
 def daily_forecast(d: BirthDetails):
     c = astro_engine.calculate_chart(d.year, d.month, d.day, d.hour, d.minute, d.latitude, d.longitude, d.timezone)
-    # Re-calculate chart for ascendant context
     return {"transits": transit_engine.calculate_current_transits(c, {"lat":d.latitude, "lon":d.longitude, "tz":d.timezone})}
 
 class MatchRequest(BaseModel): p1: BirthDetails; p2: BirthDetails
@@ -187,7 +185,6 @@ def match_charts(r: MatchRequest):
     c1 = astro_engine.calculate_chart(r.p1.year, r.p1.month, r.p1.day, r.p1.hour, r.p1.minute, r.p1.latitude, r.p1.longitude, r.p1.timezone)
     c2 = astro_engine.calculate_chart(r.p2.year, r.p2.month, r.p2.day, r.p2.hour, r.p2.minute, r.p2.latitude, r.p2.longitude, r.p2.timezone)
     analysis = match_engine.calculate_compatibility(c1, c2)
-    # Quick AI Summary
     prompt = f"Analyze compatibility. P1 Ascendant: {c1['Ascendant']['sign_id']}, P2 Ascendant: {c2['Ascendant']['sign_id']}. Analysis: {analysis}"
     verdict = chat_with_astrologer(prompt, "Relationship Context")
     return {"analysis": analysis, "ai_verdict": verdict}
