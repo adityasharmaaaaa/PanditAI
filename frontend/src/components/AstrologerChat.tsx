@@ -16,7 +16,7 @@ export default function AstrologerChat({ context }: ChatProps) {
     {
       role: "assistant",
       content:
-        "Namaste 🙏. I have analyzed your chart. Ask me anything about your career, relationships, or destiny.",
+        "Namaste. I have analyzed your chart. Ask me anything about your career, relationships, destiny and how to make it better.",
     },
   ]);
   const [input, setInput] = useState("");

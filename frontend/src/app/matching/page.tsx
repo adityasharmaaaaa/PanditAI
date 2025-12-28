@@ -246,6 +246,38 @@ export default function MatchingPage() {
           >
             {loading ? "Analyzing Stars..." : "Calculate Compatibility"}
           </button>
+
+          <div className="mt-4">
+            <button
+              onClick={() => {
+                setP1({
+                  name: "Rahul",
+                  year: 1990,
+                  month: 5,
+                  day: 25,
+                  hour: 14,
+                  minute: 30,
+                  latitude: 28.61,
+                  longitude: 77.2,
+                  timezone: 5.5,
+                });
+                setP2({
+                  name: "Priya",
+                  year: 1992,
+                  month: 9,
+                  day: 15,
+                  hour: 10,
+                  minute: 15,
+                  latitude: 19.07,
+                  longitude: 72.87,
+                  timezone: 5.5,
+                });
+              }}
+              className="text-xs text-white/30 hover:text-white transition underline"
+            >
+              Use Demo Data
+            </button>
+          </div>
         </div>
 
         {/* Results Area */}
@@ -283,8 +315,9 @@ export default function MatchingPage() {
                     <div className="text-4xl font-bold text-white">
                       {result.analysis?.score}
                     </div>
-                    <div className="text-xs text-white/50 uppercase tracking-widest">
-                      out of 36
+                    <div className="text-xs text-white/50 uppercase tracking-widest mt-1">
+                      {Math.round(((result.analysis?.score || 0) / 36) * 100)}%
+                      Match
                     </div>
                   </div>
                 </div>
