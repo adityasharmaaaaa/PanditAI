@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ChartViewer from "@/components/ChartViewer";
 import TimelineViewer from "@/components/TimelineViewer";
 import YogaList from "@/components/YogaList";
+import AstrologerChat from "@/components/AstrologerChat";
 
 type CategoryKey =
   | "personality"
@@ -192,10 +193,7 @@ export default function PredictionPage() {
 
           {/* TAB: CHAT */}
           {activeTab === "chat" && (
-            <div className="flex flex-col items-center justify-center h-full text-white/30">
-              <div className="text-6xl mb-4">💬</div>
-              <p>AI Astrologer Chat coming in next update...</p>
-            </div>
+            <AstrologerChat context={data?.meta?.fact_sheet} />
           )}
         </div>
       </main>
