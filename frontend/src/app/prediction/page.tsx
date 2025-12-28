@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import ChartViewer from "@/components/ChartViewer";
 import TimelineViewer from "@/components/TimelineViewer";
 import YogaList from "@/components/YogaList";
@@ -32,18 +33,8 @@ export default function PredictionPage() {
   useEffect(() => {
     const cached = localStorage.getItem("prediction");
     if (cached) {
-      // Handle both legacy string format and new full-object format
       try {
         const parsed = JSON.parse(cached);
-        // If it's the full backend response (has 'planets', 'metrics', etc -> check for 'ai_reading')
-        // We might need to store the WHOLE response in localStorage from the home page,
-        // OR the home page only stored 'ai_reading'.
-        // Let's assume for now we only have 'ai_reading' or 'data'.
-        // Ideally we need the FULL payload.
-        // For now, let's gracefully handle what we have.
-        // *Correction*: The Previous code stored ONLY `data.ai_reading`.
-        // We need to update Home Page to store the FULL response to get Charts/Score.
-        // For this step, I will assume `data` might be missing other fields and use placeholders.
         setData(parsed);
       } catch (e) {
         console.error("Failed to parse prediction data", e);
@@ -69,6 +60,21 @@ export default function PredictionPage() {
 
       {/* 🏛️ Dashboard Header */}
       <header className="relative z-20 pt-8 px-8 pb-4 border-b border-white/5 bg-black/20 backdrop-blur-md">
+        {/* Top Navigation Bar */}
+        <div className="max-w-7xl mx-auto flex justify-between items-center mb-6 text-xs uppercase tracking-widest text-white/40">
+          <div className="flex gap-6">
+            <Link href="/" className="hover:text-amber-200 transition-colors">
+              Home
+            </Link>
+            <Link
+              href="/matching"
+              className="hover:text-amber-200 transition-colors"
+            >
+              MatchMaking
+            </Link>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Brand & Title */}
           <div className="text-center md:text-left">
