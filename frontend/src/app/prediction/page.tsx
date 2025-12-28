@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ChartViewer from "@/components/ChartViewer";
 import TimelineViewer from "@/components/TimelineViewer";
+import YogaList from "@/components/YogaList";
 
 type CategoryKey =
   | "personality"
@@ -187,12 +188,7 @@ export default function PredictionPage() {
           )}
 
           {/* TAB: YOGAS */}
-          {activeTab === "yogas" && (
-            <div className="flex flex-col items-center justify-center h-full text-white/30">
-              <div className="text-6xl mb-4">🧘</div>
-              <p>Planetary Yogas coming in next update...</p>
-            </div>
-          )}
+          {activeTab === "yogas" && <YogaList yogas={data?.yogas} />}
 
           {/* TAB: CHAT */}
           {activeTab === "chat" && (
