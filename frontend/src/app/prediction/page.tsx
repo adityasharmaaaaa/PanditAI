@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ChartViewer from "@/components/ChartViewer";
 
 type CategoryKey =
   | "personality"
@@ -177,12 +178,7 @@ export default function PredictionPage() {
           )}
 
           {/* TAB: CHARTS */}
-          {activeTab === "charts" && (
-            <div className="flex flex-col items-center justify-center h-full text-white/30">
-              <div className="text-6xl mb-4">📐</div>
-              <p>Vedic Charts (D1/D9) coming in next update...</p>
-            </div>
-          )}
+          {activeTab === "charts" && <ChartViewer />}
 
           {/* TAB: TIMELINE */}
           {activeTab === "timeline" && (

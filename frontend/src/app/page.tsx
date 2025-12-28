@@ -5,11 +5,11 @@ import LocationAutocomplete from "@/components/LocationAutocomplete";
 
 export default function Home() {
   const [formData, setFormData] = useState({
-    dob: "",
-    time: "",
-    city: "",
-    lat: 0,
-    lon: 0,
+    dob: "1990-01-01",
+    time: "12:00",
+    city: "New York",
+    lat: 40.7128,
+    lon: -74.006,
     ayanamsa: "lahiri",
   });
 
@@ -73,9 +73,10 @@ export default function Home() {
       const data = await response.json();
       console.log("Backend response:", data);
 
-      // Store prediction in localStorage and redirect
+      // Store full prediction data (includes meta.destiny_score, charts, etc.)
       if (data) {
         localStorage.setItem("prediction", JSON.stringify(data));
+        localStorage.setItem("birth_details", JSON.stringify(payload));
         window.location.href = "/prediction";
       } else {
         setError("No prediction data received from the server");
@@ -103,12 +104,6 @@ export default function Home() {
               PanditAI
             </span>
           </h2>
-
-          <div className="flex gap-4 justify-center lg:justify-start pt-4">
-            <button className="bg-[#ff8c42] hover:bg-[#ff8c42]/90 text-white font-semibold px-8 py-3 text-lg rounded-full shadow-lg shadow-[#ff8c42]/20 transition-all hover:scale-105">
-              Get Started
-            </button>
-          </div>
         </div>
 
         {/* Right: Form */}
