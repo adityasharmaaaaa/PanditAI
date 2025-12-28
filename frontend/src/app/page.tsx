@@ -97,13 +97,23 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col lg:flex-row items-center justify-center p-6 lg:p-24 gap-12 z-10">
         {/* Left: Hero Text */}
-        <div className="flex-1 text-center lg:text-left space-y-6 max-w-2xl">
-          <h2 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-            Welcome to <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff8c42] via-[#ffd700] to-[#ff8c42] animate-pulse">
-              PanditAI
+        <h2 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+          Welcome to <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff8c42] via-[#ffd700] to-[#ff8c42] animate-pulse">
+            PanditAI
+          </span>
+        </h2>
+
+        {/* New Feature Link */}
+        <div className="pt-4">
+          <a
+            href="/matching"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors group"
+          >
+            <span className="text-rose-200 text-sm font-medium tracking-wider uppercase">
+              Try Horoscope Matching
             </span>
-          </h2>
+          </a>
         </div>
 
         {/* Right: Form */}
