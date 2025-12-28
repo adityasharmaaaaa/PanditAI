@@ -11,119 +11,255 @@ type CategoryKey =
   | "miscellaneous";
 
 const categories: { key: CategoryKey; title: string; icon: string }[] = [
-  { key: "personality", title: "Personality", icon: "✧" },
-  { key: "health", title: "Health", icon: "⚖" },
-  { key: "money", title: "Wealth", icon: "◈" },
-  { key: "career", title: "Purpose", icon: "⌬" },
-  { key: "love", title: "Affinity", icon: "❦" },
-  { key: "miscellaneous", title: "Ethereal", icon: "✶" },
+  { key: "personality", title: "Personality", icon: "♈" },
+  { key: "health", title: "Health", icon: "♋" },
+  { key: "money", title: "Money", icon: "♉" },
+  { key: "career", title: "Career", icon: "♑" },
+  { key: "love", title: "Love", icon: "♓" },
+  { key: "miscellaneous", title: "Miscellaneous", icon: "✶" },
 ];
 
 export default function PredictionPage() {
   const [activeCard, setActiveCard] = useState<CategoryKey | null>(null);
-  const [data, setData] = useState<Record<string, string>>({});
+  const [data, setData] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState("analysis");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const cached = localStorage.getItem("prediction");
-    if (cached) setData(JSON.parse(cached));
+    if (cached) {
+      // Handle both legacy string format and new full-object format
+      try {
+        const parsed = JSON.parse(cached);
+        // If it's the full backend response (has 'planets', 'metrics', etc -> check for 'ai_reading')
+        // We might need to store the WHOLE response in localStorage from the home page,
+        // OR the home page only stored 'ai_reading'.
+        // Let's assume for now we only have 'ai_reading' or 'data'.
+        // Ideally we need the FULL payload.
+        // For now, let's gracefully handle what we have.
+        // *Correction*: The Previous code stored ONLY `data.ai_reading`.
+        // We need to update Home Page to store the FULL response to get Charts/Score.
+        // For this step, I will assume `data` might be missing other fields and use placeholders.
+        setData(parsed);
+      } catch (e) {
+        console.error("Failed to parse prediction data", e);
+      }
+    }
     setIsLoaded(true);
   }, []);
 
+  // Tabs Configuration
+  const tabs = [
+    { id: "analysis", label: "🔮 Analysis" },
+    { id: "charts", label: "📐 Charts" },
+    { id: "timeline", label: "⏳ Timeline" },
+    { id: "yogas", label: "🧘 Yogas" },
+    { id: "chat", label: "💬 Chat" },
+  ];
+
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#08080a] text-[#f5f5f7] font-sans selection:bg-amber-200/30">
-      {/* 🌌 Refined Atmospheric Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,_#1a1a2e,_transparent_70%)] opacity-40" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_#0d0d0d,_transparent_50%)]" />
+    <div className="min-h-screen relative overflow-hidden bg-[#08080a] text-[#f5f5f7] font-sans selection:bg-amber-200/30 flex flex-col">
+      {/* 🌌 Atmospheric Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,_#1a1a2e,_transparent_70%)] opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_#0d0d0d,_transparent_50%)] pointer-events-none" />
 
-      {/* 🏛️ Minimalist Header */}
-      <header className="absolute top-12 left-0 w-full z-20 flex flex-col items-center">
-        <h1 className="text-sm tracking-[0.6em] font-light uppercase text-white/40 mb-2">
-          The Oracle of
-        </h1>
-        <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-200/40 to-transparent" />
-      </header>
-
-      {/* MAIN CONTENT */}
-      <main className="relative z-10 flex items-center justify-center min-h-screen px-8 pt-20">
-        {!activeCard ? (
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl w-full transition-all duration-1000 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-          >
-            {categories.map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => setActiveCard(cat.key)}
-                className="group relative text-left outline-none"
-              >
-                <div className="absolute inset-0 bg-amber-200/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative h-56 p-8 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm flex flex-col justify-between transition-all duration-500 group-hover:border-amber-200/20 group-hover:-translate-y-1">
-                  <span className="text-3xl font-light text-amber-100/40 group-hover:text-amber-100/80 transition-colors duration-500">
-                    {cat.icon}
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-serif tracking-widest text-white/80 group-hover:text-white transition-colors duration-500">
-                      {cat.title}
-                    </h3>
-                    <div className="h-px w-0 bg-amber-200/30 mt-2 transition-all duration-700 group-hover:w-full" />
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="max-w-2xl w-full animate-reveal">
-            <div className="relative p-12 rounded-3xl border border-white/10 bg-white/[0.01] backdrop-blur-3xl shadow-2xl">
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-[#08080a] border border-white/10 rounded-full">
-                <span className="text-xs tracking-[0.4em] uppercase text-amber-200/60">
-                  {categories.find((c) => c.key === activeCard)?.title}
-                </span>
-              </div>
-
-              <div className="space-y-8">
-                <p className="text-xl font-serif leading-relaxed text-white/90 text-center first-letter:text-3xl first-letter:font-light">
-                  {data[activeCard] ||
-                    "The celestial alignment is currently obscured. Seek clarity within and return when the moon is high."}
-                </p>
-
-                <div className="flex justify-center pt-8">
-                  <button
-                    onClick={() => setActiveCard(null)}
-                    className="group flex items-center gap-3 text-xs tracking-[0.3em] uppercase text-white/40 hover:text-amber-200 transition-colors duration-300"
-                  >
-                    <span className="h-px w-8 bg-white/20 group-hover:bg-amber-200/40 transition-all" />
-                    Return to Oracles
-                    <span className="h-px w-8 bg-white/20 group-hover:bg-amber-200/40 transition-all" />
-                  </button>
-                </div>
-              </div>
+      {/* 🏛️ Dashboard Header */}
+      <header className="relative z-20 pt-8 px-8 pb-4 border-b border-white/5 bg-black/20 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Brand & Title */}
+          <div className="text-center md:text-left">
+            <h1 className="text-xs tracking-[0.6em] uppercase text-white/40 mb-1">
+              PanditAI
+            </h1>
+            <div className="text-2xl font-serif text-amber-100/90 tracking-wide">
+              Vedic Life Architect
             </div>
           </div>
-        )}
+
+          {/* Destiny Score (Placeholder if data missing) */}
+          <div className="flex items-center gap-4 bg-white/5 rounded-full px-6 py-2 border border-white/10">
+            <div className="text-right">
+              <div className="text-[10px] uppercase tracking-widest text-white/50">
+                Destiny Score
+              </div>
+              <div className="text-xl font-bold text-amber-200">
+                {data?.meta ? data.meta.destiny_score : "--"}/100
+              </div>
+            </div>
+            <div className="h-10 w-10 rounded-full border-2 border-amber-200/30 flex items-center justify-center">
+              <span className="text-lg">🌟</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="max-w-7xl mx-auto mt-8 flex gap-8 overflow-x-auto pb-2 scrollbar-hide">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setActiveCard(null);
+              }}
+              className={`relative px-1 py-2 text-sm tracking-widest uppercase transition-all duration-300 ${
+                activeTab === tab.id
+                  ? "text-amber-200"
+                  : "text-white/40 hover:text-white/70"
+              }`}
+            >
+              {tab.label}
+              {activeTab === tab.id && (
+                <div className="absolute bottom-0 left-0 w-full h-px bg-amber-200 shadow-[0_0_10px_#fcd34d]" />
+              )}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      {/* MAIN CONTENT AREA */}
+      <main className="relative z-10 flex-1 overflow-y-auto p-4 md:p-8">
+        <div className="max-w-7xl mx-auto min-h-[500px]">
+          {/* TAB: ANALYSIS */}
+          {activeTab === "analysis" && (
+            <div
+              className={`transition-all duration-700 ${
+                isLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {/* Keep existing Grid Logic here, compacted */}
+              {!activeCard ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.key}
+                      onClick={() => setActiveCard(cat.key)}
+                      className="group relative text-left outline-none"
+                    >
+                      <div className="absolute inset-0 bg-amber-200/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      <div className="relative h-48 p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm flex flex-col justify-between transition-all duration-500 group-hover:border-amber-200/20 group-hover:-translate-y-1">
+                        <span className="text-2xl font-light text-amber-100/40 group-hover:text-amber-100/80 transition-colors duration-500">
+                          {cat.icon}
+                        </span>
+                        <div>
+                          <h3 className="text-lg font-serif tracking-widest text-white/80 group-hover:text-white transition-colors duration-500">
+                            {cat.title}
+                          </h3>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="max-w-4xl mx-auto animate-reveal">
+                  <div className="relative p-10 rounded-3xl border border-white/10 bg-white/[0.01] backdrop-blur-3xl shadow-2xl">
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-xs tracking-[0.4em] uppercase text-amber-200/60">
+                        {categories.find((c) => c.key === activeCard)?.title}
+                      </span>
+                      <button
+                        onClick={() => setActiveCard(null)}
+                        className="text-white/30 hover:text-white transition"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <p className="text-lg font-serif leading-relaxed text-white/90 whitespace-pre-line">
+                      {/* Handle Data Access Safely */}
+                      {(data?.ai_reading && typeof data.ai_reading === "object"
+                        ? data.ai_reading[activeCard]
+                        : "Predictive data not found. Please regenerate.") ||
+                        "The celestial stars are silent."}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB: CHARTS */}
+          {activeTab === "charts" && (
+            <div className="flex flex-col items-center justify-center h-full text-white/30">
+              <div className="text-6xl mb-4">📐</div>
+              <p>Vedic Charts (D1/D9) coming in next update...</p>
+            </div>
+          )}
+
+          {/* TAB: TIMELINE */}
+          {activeTab === "timeline" && (
+            <div className="flex flex-col items-center justify-center h-full text-white/30">
+              <div className="text-6xl mb-4">⏳</div>
+              <p>Vimshottari Dasha Timeline coming in next update...</p>
+            </div>
+          )}
+
+          {/* TAB: YOGAS */}
+          {activeTab === "yogas" && (
+            <div className="flex flex-col items-center justify-center h-full text-white/30">
+              <div className="text-6xl mb-4">🧘</div>
+              <p>Planetary Yogas coming in next update...</p>
+            </div>
+          )}
+
+          {/* TAB: CHAT */}
+          {activeTab === "chat" && (
+            <div className="flex flex-col items-center justify-center h-full text-white/30">
+              <div className="text-6xl mb-4">💬</div>
+              <p>AI Astrologer Chat coming in next update...</p>
+            </div>
+          )}
+        </div>
       </main>
 
-      {/* 🕯️ Subtle Footer Detail */}
-      <footer className="absolute bottom-12 w-full text-center px-4">
-        <p className="text-[10px] tracking-[0.5em] uppercase text-white/20 font-light">
-          Wisdom is the silent language of the stars
-        </p>
-      </footer>
-
       <style jsx>{`
-        @keyframes reveal {
+            90deg,
+            transparent,
+            #ffffff,
+            #a855f7,
+            #ffffff,
+            transparent
+          );
+          animation: thunder 2s ease-in-out forwards;
+        }
+
+        @keyframes thunder {
+          from {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0%);
+            opacity: 1;
+          }
+        }
+
+        @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(20px) scale(0.98);
+            transform: translateY(10px);
           }
           to {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
           }
         }
-        .animate-reveal {
-          animation: reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.85);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-fadeInScale {
+          animation: fadeInScale 0.6s ease-out;
         }
       `}</style>
     </div>

@@ -6,6 +6,7 @@ import torch.nn as nn
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from src.api.schemas import BirthDetails, ChartResponse
 
@@ -16,6 +17,7 @@ from src.astronomy.transits import TransitEngine
 from src.astronomy.match import MatchMaker
 from src.astronomy.yogas import YogaEngine
 from src.model.inference import generate_horoscope_reading, chat_with_astrologer
+from src.utils.chart_plotter import draw_north_indian_chart
 
 app = FastAPI(title="PanditAI: Neuro-Symbolic Engine")
 
@@ -315,6 +317,37 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 def chat_endpoint(r: ChatRequest):
     return {"response": chat_with_astrologer(r.query, r.context)}
+
+
+@app.post("/chart-image")
+def get_chart_image(style: str, d: BirthDetails):
+    """
+    Generates a D1 or D9 chart image.
+    Query param: style ('d1' or 'd9')
+    Body: BirthDetails
+    """
+    # Calculate Chart
+    chart = astro_engine.calculate_chart(
+        d.year, d.month, d.day, d.hour, d.minute, d.latitude, d.longitude, d.timezone
+    )
+
+    if style.lower() == "d9":
+        # Prepare data for D9 (Navamsa)
+        d9_planets = {}
+        asc_id = chart["Ascendant"]["d9_sign_id"]
+        for p, info in chart.items():
+            # For D9, we use the D9 sign ID as the 'sign_id' for plotting
+            d9_planets[p] = {
+                "sign_id": info["d9_sign_id"],
+                "is_retrograde": info.get("is_retrograde", False),
+            }
+        buf = draw_north_indian_chart(d9_planets, asc_id, "D9 Navamsa")
+    else:
+        # Prepare data for D1 (Rashi)
+        asc_id = chart["Ascendant"]["sign_id"]
+        buf = draw_north_indian_chart(chart, asc_id, "D1 Rashi")
+
+    return StreamingResponse(buf, media_type="image/png")
 
 
 if __name__ == "__main__":
