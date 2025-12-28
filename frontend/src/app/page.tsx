@@ -74,8 +74,8 @@ export default function Home() {
       console.log("Backend response:", data);
 
       // Store prediction in localStorage and redirect
-      if (data.ai_reading) {
-        localStorage.setItem("prediction", JSON.stringify(data.ai_reading));
+      if (data) {
+        localStorage.setItem("prediction", JSON.stringify(data));
         window.location.href = "/prediction";
       } else {
         setError("No prediction data received from the server");
