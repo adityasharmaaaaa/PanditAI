@@ -34,7 +34,7 @@ class MatchMaker:
 
     def calculate_compatibility(self, chart_a, chart_b):
         """
-        Compares Person A vs Person B
+        Compares Person A vs Person B using Ashta Koota (36 Points)
         """
         report = {}
 
@@ -48,7 +48,6 @@ class MatchMaker:
             "match_status": "Neutral",
         }
 
-        # Manglik Logic: Best if BOTH are Manglik or BOTH are NOT.
         if a_manglik and b_manglik:
             report["manglik"]["match_status"] = "Perfect (Cancellation)"
             report["manglik"]["desc"] = "Both are Manglik. The fire cancels out."
@@ -57,44 +56,75 @@ class MatchMaker:
             report["manglik"]["desc"] = "Neither has Mars Dosha. Safe."
         else:
             report["manglik"]["match_status"] = "Clash (Manglik Dosha)"
-            report["manglik"]["desc"] = (
-                "One is Manglik and the other is not. Potential for intense conflict."
-            )
+            report["manglik"]["desc"] = "One is Manglik. Potential for conflict."
 
-        # 2. MOON COMPATIBILITY (Emotional Sync)
+        # 2. ASHTA KOOTA Calculation
+        scores = {
+            "Varna": 1,
+            "Vashya": 2,
+            "Tara": 3,
+            "Yoni": 4,
+            "Maitri": 5,
+            "Gana": 6,
+            "Bhakoot": 7,
+            "Nadi": 8,
+        }
+
         if "Moon" in chart_a and "Moon" in chart_b:
             m1 = chart_a["Moon"]["sign_id"]
             m2 = chart_b["Moon"]["sign_id"]
+            nak1 = chart_a["Moon"].get("nakshatra_id", 0)
+            nak2 = chart_b["Moon"].get("nakshatra_id", 0)
 
-            p1_group = "Deva" if m1 in self.deva_signs else "Asura"
-            p2_group = "Deva" if m2 in self.deva_signs else "Asura"
+            # A. VARNA (1 pt)
+            e1 = m1 % 4
+            e2 = m2 % 4
+            scores["Varna"] = 1 if e1 == e2 else 0.5
 
-            score = 0
-            if p1_group == p2_group:
-                status = "Excellent"
-                score = 100
+            # B. VASHYA (2 pts)
+            scores["Vashya"] = 2 if abs(m1 - m2) not in [6, 8] else 1
+
+            # C. TARA (3 pts)
+            dist = (nak2 - nak1) % 9
+            scores["Tara"] = 3 if dist % 2 == 0 else 1.5
+
+            # D. YONI (4 pts)
+            scores["Yoni"] = 4 if (nak1 % 2) == (nak2 % 2) else 2
+
+            # E. MAITRI (5 pts)
+            p1_Deva = m1 in self.deva_signs
+            p2_Deva = m2 in self.deva_signs
+            scores["Maitri"] = (
+                5 if p1_Deva == p2_Deva else 3 if abs(m1 - m2) in [4, 5, 9] else 0.5
+            )
+
+            # F. GANA (6 pts)
+            scores["Gana"] = (
+                6
+                if (nak1 % 3) == (nak2 % 3)
+                else 3
+                if abs((nak1 % 3) - (nak2 % 3)) == 1
+                else 0
+            )
+
+            # G. BHAKOOT (7 pts)
+            rel = (m2 - m1) % 12 + 1
+            if rel in [2, 12, 6, 8]:
+                scores["Bhakoot"] = 0
             else:
-                status = "Challenging"
-                score = 40
+                scores["Bhakoot"] = 7
 
-            report["emotional"] = {
-                "status": status,
-                "score": score,
-                "p1_group": p1_group,
-                "p2_group": p2_group,
-            }
-
-        # 3. SUN COMPATIBILITY (Ego Check)
-        if "Sun" in chart_a and "Sun" in chart_b:
-            s1 = chart_a["Sun"]["sign_id"]
-            s2 = chart_b["Sun"]["sign_id"]
-            # 7th house opposition is Attraction + Conflict
-            distance = abs(s1 - s2)
-            if distance == 6:
-                report["ego"] = "Opposites Attract (7th House)"
-            elif distance == 0:
-                report["ego"] = "Same Sign (Conjunction)"
+            # H. NADI (8 pts)
+            n1 = nak1 % 3
+            n2 = nak2 % 3
+            if n1 == n2:
+                scores["Nadi"] = 0
             else:
-                report["ego"] = "Neutral"
+                scores["Nadi"] = 8
+
+        total_score = sum(scores.values())
+
+        report["score"] = total_score
+        report["details"] = scores
 
         return report
