@@ -44,7 +44,9 @@ export default function MatchingPage() {
   const handleMatch = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/match", {
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/match`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ p1, p2 }),

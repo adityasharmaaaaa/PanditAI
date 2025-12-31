@@ -58,7 +58,9 @@ export default function Home() {
       console.log("Sending to backend:", payload);
 
       // Call backend API
-      const response = await fetch("http://localhost:8000/calculate", {
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const response = await fetch(`${API_URL}/calculate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

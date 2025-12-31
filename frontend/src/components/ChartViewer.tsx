@@ -10,14 +10,13 @@ export default function ChartViewer() {
   // Helper function to fetch chart image
   const fetchChart = async (style: "d1" | "d9", details: any) => {
     try {
-      const res = await fetch(
-        `http://localhost:8000/chart-image?style=${style}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(details),
-        }
-      );
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/chart-image?style=${style}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(details),
+      });
       if (res.ok) {
         const blob = await res.blob();
         return URL.createObjectURL(blob);
