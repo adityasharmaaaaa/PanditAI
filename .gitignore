@@ -5,5 +5,5 @@ venv/
 .env
 .DS_Store
 
-data/neo4j_data/
+backend/data/neo4j_data/
 

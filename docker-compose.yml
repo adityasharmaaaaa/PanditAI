@@ -1,6 +1,33 @@
 version: '3.8'
 
 services:
+  # 1. FRONTEND (Next.js)
+  frontend:
+    build: ./frontend
+    container_name: pandit_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    restart: always
+
+  # 2. BACKEND (FastAPI)
+  backend:
+    build: ./backend
+    container_name: pandit_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - neo4j
+    environment:
+      - NEO4J_URI=neo4j+s://86369242.databases.neo4j.io
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=JnCaeBG095zMPC5skb6Gw0OI3wwwsCRBSVm250MFwWM
+    restart: always
+
+  # 3. DATABASE (Neo4j)
   neo4j:
     image: neo4j:5.16.0
     container_name: pandit_graph_db
@@ -8,9 +35,10 @@ services:
       - "7474:7474" # HTTP Interface
       - "7687:7687" # Bolt Protocol (for Python)
     environment:
-      NEO4J_AUTH: neo4j/pandit_secret_password
-      NEO4J_apoc_export_file_enabled: "true"
-      NEO4J_apoc_import_file_enabled: "true"
-      NEO4J_PLUGINS: '["apoc"]'
+      - NEO4J_AUTH=neo4j/pandit_secret_password
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_PLUGINS=["apoc"]
     volumes:
-      - ./data/neo4j_data:/data
+      - ./backend/data/neo4j_data:/data
+    restart: always
