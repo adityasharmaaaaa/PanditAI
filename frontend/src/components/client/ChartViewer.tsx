@@ -7,7 +7,6 @@ export default function ChartViewer() {
   const [d9Image, setD9Image] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Helper function to fetch chart image
   const fetchChart = async (style: "d1" | "d9", details: any) => {
     try {
       const API_URL =
@@ -36,8 +35,6 @@ export default function ChartViewer() {
       }
 
       const details = JSON.parse(storedDetails);
-
-      // Fetch both charts in parallel
       const [d1, d9] = await Promise.all([
         fetchChart("d1", details),
         fetchChart("d9", details),
@@ -53,55 +50,62 @@ export default function ChartViewer() {
 
   if (loading) {
     return (
-      <div className="h-96 flex items-center justify-center text-white/30 animate-pulse">
-        Generating Vedic Charts...
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Array.from({ length: 2 }).map((_, idx) => (
+          <div
+            key={`chart-skeleton-${idx}`}
+            className="rounded-[var(--radius)] border border-border p-4 bg-card shadow-[var(--shadow-subtle)] space-y-4"
+          >
+            <div className="skeleton h-6 w-1/2" />
+            <div className="skeleton h-64 w-full" />
+            <div className="skeleton h-4 w-3/4" />
+          </div>
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-reveal">
-      {/* D1 Chart Card */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center">
-        <h3 className="text-xl font-serif text-amber-100 mb-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex flex-col items-center p-4 rounded-[var(--radius)] bg-card border border-border shadow-[var(--shadow-subtle)]">
+        <h3 className="type-lg font-heading text-foreground mb-4">
           Lagna Chart (D1)
         </h3>
         {d1Image ? (
           <img
             src={d1Image}
-            alt="D1 Chart"
-            className="w-full max-w-sm rounded-lg shadow-lg border border-white/5"
+            alt="Lagna chart"
+            className="w-full max-w-sm rounded-[var(--radius)] border border-border shadow-[var(--shadow-subtle)]"
           />
         ) : (
-          <div className="w-full h-64 bg-black/20 rounded flex items-center justify-center text-white/20">
-            Chart Unavailable
+          <div className="w-full h-64 bg-background rounded-[var(--radius)] border border-border flex items-center justify-center type-sm text-muted-foreground">
+            Chart unavailable
           </div>
         )}
-        <p className="text-sm text-white/40 mt-4 text-center">
+        <p className="type-sm text-muted-foreground mt-4 text-center">
           The primary birth chart representing your physical body and general
           destiny.
         </p>
       </div>
 
-      {/* D9 Chart Card */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col items-center">
-        <h3 className="text-xl font-serif text-amber-100 mb-4">
+      <div className="flex flex-col items-center p-4 rounded-[var(--radius)] bg-card border border-border shadow-[var(--shadow-subtle)]">
+        <h3 className="type-lg font-heading text-foreground mb-4">
           Navamsa Chart (D9)
         </h3>
         {d9Image ? (
           <img
             src={d9Image}
-            alt="D9 Chart"
-            className="w-full max-w-sm rounded-lg shadow-lg border border-white/5"
+            alt="Navamsa chart"
+            className="w-full max-w-sm rounded-[var(--radius)] border border-border shadow-[var(--shadow-subtle)]"
           />
         ) : (
-          <div className="w-full h-64 bg-black/20 rounded flex items-center justify-center text-white/20">
-            Chart Unavailable
+          <div className="w-full h-64 bg-background rounded-[var(--radius)] border border-border flex items-center justify-center type-sm text-muted-foreground">
+            Chart unavailable
           </div>
         )}
-        <p className="text-sm text-white/40 mt-4 text-center">
+        <p className="type-sm text-muted-foreground mt-4 text-center">
           The chart of the soul and internal strength, primarily used for
-          marriage and fruit of karma.
+          marriage and karma.
         </p>
       </div>
     </div>

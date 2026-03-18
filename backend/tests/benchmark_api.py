@@ -23,7 +23,7 @@ def run_benchmark():
     errors = 0
 
     print(f"Starting Benchmark: {REQUEST_COUNT} requests to {API_URL}")
-    print("-" * 50)
+    print("-" * REQUEST_COUNT)
 
     start_time = time.time()
 

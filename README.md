@@ -1,6 +1,15 @@
-# PanditAI 🕉️
-
 A Neuro-Symbolic Vedic Astrology application that combines ancient astrological wisdom with modern AI.
+
+
+## UI Screenshots
+<img width="1574" height="833" alt="image" src="https://github.com/user-attachments/assets/6acc4394-80a7-4978-8fdd-fbbbc50fcc65" />
+<img width="1728" height="868" alt="image" src="https://github.com/user-attachments/assets/154f5a1a-7b46-4d38-b4e1-9cbcbbafffcc" />
+
+
+
+## Design System
+
+The frontend uses a tokenized system for spacing, typography, color, radius, and motion. All interactive UI uses a single radius token, an 8-point spacing scale for layout, and a single font family with a defined type ramp.
 
 ## What It Is
 
@@ -28,11 +37,11 @@ PanditAI generates personalized Vedic horoscope readings by:
 
 ## Features
 
-- ✨ Precise astronomical calculations (Planets, Houses, Ascendant)
-- 📊 Advanced techniques (Navamsa D9, Jaimini Karakas, Arudha Padas)
-- 🧠 AI-powered natural language readings
-- 🎨 Modern, responsive UI with dark theme
-- 🔮 Multiple Ayanamsa systems (Lahiri, Raman, KP)
+- Precise astronomical calculations (Planets, Houses, Ascendant)
+- Advanced techniques (Navamsa D9, Jaimini Karakas, Arudha Padas)
+- AI-powered natural language readings
+- Modern, responsive UI with dark theme
+- Multiple Ayanamsa systems (Lahiri, Raman, KP)
 
 ## How It Works
 
@@ -90,6 +99,19 @@ npm run dev
 ```
 
 Visit `http://localhost:3000`
+
+### 3. Running with Docker (Recommended)
+
+This sets up the Frontend, Backend, and Neo4j Database automatically.
+
+1. Ensure **Docker Desktop** is installed and running.
+2. Run the build command:
+
+```bash
+docker-compose up --build
+```
+
+3. The app will be available at `http://localhost:3000`.
 
 ## Environment Variables
 

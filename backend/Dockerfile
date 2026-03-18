@@ -1,24 +1,29 @@
-FROM python:3.10
+# Stage 1: Builder
+FROM python:3.10-slim AS builder
 
 WORKDIR /app
 
-# Install system dependencies required for pyswisseph
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies into /install
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# Copy application code
+# Stage 2: Runtime
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copy installed dependencies from builder
+COPY --from=builder /install /usr/local
+
 COPY . .
 
-# Download/Bake ephemeral data into the image
+# Download ephemeris
 RUN python setup_data.py
 
-# Expose port
 EXPOSE 8000
-
-# Run the application
 CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
